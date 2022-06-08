@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Base class for repositories
 class ApplicationRepository
   class << self
     delegate :all, to: :scope

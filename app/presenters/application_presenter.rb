@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Base class for presenters
 class ApplicationPresenter < SimpleDelegator
   ATTRS = {}.freeze
   METHODS = {}.freeze
@@ -14,7 +15,7 @@ class ApplicationPresenter < SimpleDelegator
     __getobj__.class
   end
 
-  def to_json
-    self.to_json(only: self.class::ATTRS, methods:self.class::METHODS)
+  def to_json(*_args)
+    to_json(only: self.class::ATTRS, methods: self.class::METHODS)
   end
 end

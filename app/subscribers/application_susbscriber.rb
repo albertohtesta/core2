@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Base class for subscribers
 class ApplicationSubscriber < ApplicationJob
   include Sneakers::Worker
   from_queue :default

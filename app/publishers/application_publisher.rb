@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Base class for publishers
 class ApplicationPublisher
   class << self
     def direct_to(route_name)
