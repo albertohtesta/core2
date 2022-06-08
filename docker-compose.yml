@@ -5,8 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    depends_on:     
+    depends_on:
       - pg
+      - rabbitmq
       - redis
     ports:
       - "3000:3000"
@@ -40,7 +41,17 @@ services:
     volumes:
       - ./config/redis.conf:/redis.conf
     command: [ "redis-server", "/redis.conf", "--requirepass ${REDIS_PASSWORD}" ]
+  rabbitmq:
+    image: rabbitmq:3.10-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+      - rabbitmq_log:/var/log/rabbitmq
 
 volumes:
   gem_cache:
   db_data:
+  rabbitmq_data:
+  rabbitmq_log:
