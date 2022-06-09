@@ -27,14 +27,14 @@ build:
   stage: build
   script:
     - bundle install
-    
-code_quality:
-  services:
-  tags:
-    - code-quality
-  artifacts:
-    paths:
-      - gl-code-quality-report.json
+
+rubocop:
+  stage: test
+  cache:
+    policy: pull
+  script:
+    - bundle install
+    - bundle exec rubocop
 
 test:
   stage: test
