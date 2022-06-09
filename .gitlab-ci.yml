@@ -62,7 +62,6 @@ test:
     COVERAGE: 1
   script:
     - source ~/.bashrc
-    - bundle config set --local path 'vendor/cache'
     - bundle install
     - cp config/database.ci.yml config/database.yml
     - bin/rails db:create

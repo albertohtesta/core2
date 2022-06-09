@@ -1,6 +1,6 @@
 FROM ruby:3.1.1-alpine
 
-RUN apk --update add build-base tzdata postgresql-dev postgresql-client
+RUN apk --update add build-base tzdata postgresql-dev postgresql-client bash
 
 ENV APP_DIR /core
 
