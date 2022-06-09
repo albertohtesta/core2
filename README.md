@@ -66,4 +66,8 @@
   ```console
   docker-compose ls
   ```
+ * Get access to the desired app within a container and execute the specified command.
+  ```console
+  docker-compose exec <APP_NAME OR APP_ID> <COMMAND>
+  ```
 
