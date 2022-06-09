@@ -61,7 +61,6 @@ test:
   variables:
     COVERAGE: 1
   script:
-    - source ~/.bashrc
     - bundle install
     - cp config/database.ci.yml config/database.yml
     - bin/rails db:create
