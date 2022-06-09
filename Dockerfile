@@ -6,7 +6,8 @@ ENV APP_DIR /core
 
 WORKDIR $APP_DIR
 
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile ./
+COPY Gemfile.lock ./
 
 ARG RAILS_ENV
 ENV RACK_ENV=$RAILS_ENV
