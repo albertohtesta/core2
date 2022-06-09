@@ -5,9 +5,9 @@ include:
 
 variables:
   RAILS_ENV: "test"
-  DB_PASSWORD: password
+  DB_PASSWORD: postgres
   DB_USER: postgres
-  DB_HOST: pg
+  DB_HOST: postgres
   RABBIT_HOST: rabbitmq
   RABBIT_PORT: 15672
   POSTGRES_HOST_AUTH_METHOD: trust
