@@ -23,26 +23,11 @@ stages:
   - test
   - deploy
 
-cache:
-  paths:
-    - node_modules
-    - vendor/cache
-
 build:
   stage: build
   script:
-    - source ~/.bashrc
-    - bundle config set --local path 'vendor/cache'
-    - yarn install --ignore-engines
-    - yarn build
-    - yarn build:css
     - bundle install
-  artifacts:
-    paths:
-      - node_modules
-      - vendor/cache
-      - app/assets/builds
-
+    
 code_quality:
   services:
   tags:
