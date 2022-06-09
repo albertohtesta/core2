@@ -1,0 +1,70 @@
+image: registry.michelada.io/norden/core-backend/core-backend:latest
+
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
+variables:
+  RAILS_ENV: "test"
+  POSTGRES_DB: norden_core_test
+  POSTGRES_HOST: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST_AUTH_METHOD: trust
+  DISABLE_SPRING: "true"
+  CI: 1
+  REDIS_URL: 'redis://redis:6379/1'
+
+services:
+  - postgres
+  - redis:latest
+
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+    - node_modules
+    - vendor/cache
+
+build:
+  stage: build
+  script:
+    - source ~/.bashrc
+    - bundle config set --local path 'vendor/cache'
+    - yarn install --ignore-engines
+    - yarn build
+    - yarn build:css
+    - bundle install
+  artifacts:
+    paths:
+      - node_modules
+      - vendor/cache
+      - app/assets/builds
+
+code_quality:
+  services:
+  tags:
+    - code-quality
+  artifacts:
+    paths:
+      - gl-code-quality-report.json
+
+test:
+  stage: test
+  cache:
+    policy: pull
+  artifacts:
+    paths:
+      - 'coverage/'
+  variables:
+    COVERAGE: 1
+  script:
+    - source ~/.bashrc
+    - bundle config set --local path 'vendor/cache'
+    - bundle install
+    - cp config/database.ci.yml config/database.yml
+    - bin/rails db:create
+    - bin/rails db:test:prepare
+    - bin/rails test
