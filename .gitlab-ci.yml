@@ -5,10 +5,11 @@ include:
 
 variables:
   RAILS_ENV: "test"
-  POSTGRES_DB: norden_core_test
-  POSTGRES_HOST: postgres
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
+  DB_PASSWORD: password
+  DB_USER: postgres
+  DB_HOST: pg
+  RABBIT_HOST: rabbitmq
+  RABBIT_PORT: 15672
   POSTGRES_HOST_AUTH_METHOD: trust
   DISABLE_SPRING: "true"
   CI: 1
