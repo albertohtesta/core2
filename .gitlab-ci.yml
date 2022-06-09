@@ -47,7 +47,6 @@ test:
     COVERAGE: 1
   script:
     - bundle install
-    - cp config/database.ci.yml config/database.yml
     - bin/rails db:create
     - bin/rails db:test:prepare
     - bin/rails test
