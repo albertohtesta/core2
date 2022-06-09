@@ -41,6 +41,7 @@ services:
     volumes:
       - ./config/redis.conf:/redis.conf
     command: [ "redis-server", "/redis.conf", "--requirepass ${REDIS_PASSWORD}" ]
+    
   rabbitmq:
     image: rabbitmq:3.10-management-alpine
     ports:

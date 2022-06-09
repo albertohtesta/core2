@@ -17,6 +17,7 @@ variables:
 services:
   - postgres
   - redis:latest
+  - rabbitmq:latest
 
 stages:
   - build
