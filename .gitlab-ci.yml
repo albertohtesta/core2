@@ -30,14 +30,14 @@ stages:
 build:
   stage: build
   script:
-    - bundle install --path vendor/bundle
+    - bundle install
 
 rubocop:
   stage: test
   cache:
     policy: pull
   script:
-    - bundle install --path vendor/bundle
+    - bundle install
     - bundle exec rubocop
 
 test:
@@ -50,7 +50,7 @@ test:
   variables:
     COVERAGE: 1
   script:
-    - bundle install --path vendor/bundle
+    - bundle install
     - bin/rails db:create
     - bin/rails db:test:prepare
     - bin/rails test
