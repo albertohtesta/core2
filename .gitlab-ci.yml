@@ -11,6 +11,11 @@ variables:
   DISABLE_SPRING: "true"
   CI: 1
   REDIS_URL: 'redis://redis:6379/1'
+  AWS_REGION: 'us-west-1'
+  AWS_COGNITO_POOL_ID: <%= ENV["AWS_COGNITO_POOL_ID"] %>
+  AWS_COGNITO_CLIENT_ID: <%= ENV["AWS_COGNITO_CLIENT_ID"] %>
+  ACCESS_KEY_ID: <%= ENV["ACCESS_KEY_ID"] %>
+  SECRET_ACCESS_KEY: <%= ENV["SECRET_ACCESS_KEY"] %>
 
 cache: &global_cache
   key: $CI_COMMIT_REF_SLUG
