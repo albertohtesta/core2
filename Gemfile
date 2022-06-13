@@ -12,6 +12,9 @@ gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 gem "rails", "~> 7.0.2", ">= 7.0.2.3"
 gem "redis"
+gem "sidekiq"
+gem "sidekiq-scheduler"
+gem "sidekiq-unique-jobs"
 gem "sneakers"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
