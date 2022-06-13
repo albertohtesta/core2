@@ -14,6 +14,7 @@ variables:
 
 cache: &global_cache
   key: $CI_COMMIT_REF_SLUG
+  policy: pull-push
   paths:
     - public/
     - vendor/
@@ -32,14 +33,15 @@ build:
   stage: build
   cache:
     <<: *global_cache
+    policy: pull
   script:
     - bundle install
 
 rubocop:
   stage: test
   cache:
-    policy: pull
     <<: *global_cache
+    policy: pull
   script:
     - bundle install
     - bundle exec rubocop
@@ -47,8 +49,8 @@ rubocop:
 test:
   stage: test
   cache:
-    policy: pull
     <<: *global_cache
+    policy: pull
   artifacts:
     paths:
       - 'coverage/'
