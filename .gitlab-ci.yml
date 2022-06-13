@@ -1,8 +1,5 @@
 image: registry.michelada.io/norden/core-backend/core-backend:latest
 
-include:
-  - template: Code-Quality.gitlab-ci.yml
-
 variables:
   RAILS_ENV: "test"
   DB_PASSWORD: postgres
