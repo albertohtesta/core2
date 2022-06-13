@@ -12,10 +12,11 @@ variables:
   CI: 1
   REDIS_URL: 'redis://redis:6379/1'
 
-cache:
-  key: $CI_PROJECT_NAME
+cache: &global_cache
+  key: $CI_COMMIT_REF_SLUG
   paths:
-    - vendor/bundle
+    - public/
+    - vendor/
 
 services:
   - postgres
