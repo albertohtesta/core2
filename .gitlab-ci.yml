@@ -33,7 +33,6 @@ build:
   stage: build
   cache:
     <<: *global_cache
-    policy: pull
   script:
     - bundle install
 
