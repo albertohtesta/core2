@@ -5,10 +5,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    depends_on:
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    depends_on:     
       - pg
       - rabbitmq
       - redis
+      - sidekiq
     ports:
       - "3000:3000"
     volumes:
@@ -18,9 +20,7 @@ services:
     env_file: .env.dev
     tty: true
     stdin_open: true
-    environment:
-      DB_PASSWORD: password
-      DB_USER: postgres
+    environment:      
       RAILS_ENV: development
       DB_HOST: pg
       BUNDLE_PATH: /core-backend/vendor/bundle
@@ -45,8 +45,9 @@ services:
   pg:
     image: postgres:14.3-alpine
     restart: always
+    env_file: .env.dev
     environment:
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -54,7 +55,7 @@ services:
 
   redis:
     image: redis:7.0-alpine
-    env_file: .env
+    env_file: .env.dev
     ports:
       - 6379:6379
     volumes:
@@ -69,6 +70,17 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq/
       - rabbitmq_log:/var/log/rabbitmq
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bundle exec sidekiq
+    depends_on:
+      - redis
+    volumes:
+      - .:/core
+    env_file: .env.dev
 
 volumes:
   gem_cache:
