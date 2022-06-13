@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  core:
+  core-backend:
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -12,8 +12,9 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/core
-      - gem_cache:/usr/local/bundle/gems
+      - .:/core-backend
+      - gem_cache:/core-backend/vendor/bundle
+      - ssh-data:/ssh:ro
     env_file: .env.dev
     tty: true
     stdin_open: true
@@ -22,6 +23,24 @@ services:
       DB_USER: postgres
       RAILS_ENV: development
       DB_HOST: pg
+      BUNDLE_PATH: /core-backend/vendor/bundle
+      PORT: 3000
+      SSH_AUTH_SOCK: /ssh/auth/sock
+
+  core-frontend:
+    build:
+      context: ./core-frontend
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - core-backend
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./core-frontend:/core-frontend
+      - node_cache:/core-frontend/node_modules
+    environment:
+      NODE_ENV: development
+      PORT: 4000
 
   pg:
     image: postgres:14.3-alpine
@@ -41,7 +60,7 @@ services:
     volumes:
       - ./config/redis.conf:/redis.conf
     command: [ "redis-server", "/redis.conf", "--requirepass ${REDIS_PASSWORD}" ]
-    
+
   rabbitmq:
     image: rabbitmq:3.10-management-alpine
     ports:
@@ -53,6 +72,10 @@ services:
 
 volumes:
   gem_cache:
+  node_cache:
   db_data:
   rabbitmq_data:
   rabbitmq_log:
+  ssh-data:
+    external: true
+    name: ssh_data

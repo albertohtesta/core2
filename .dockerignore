@@ -5,14 +5,12 @@
 .bundleignore
 .bundle
 .byebug_history
-.rspec
 tmp
 log
 test
 config/deploy
-public/packs
-public/packs-test
-node_modules
-yarn-error.log
+core-frontend/
+services/
 coverage/
 .env
+tags

@@ -1,0 +1,3 @@
+[submodule "core-frontend"]
+	path = core-frontend
+	url = git@git.michelada.io:norden/core-frontend.git
