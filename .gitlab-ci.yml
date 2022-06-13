@@ -12,6 +12,11 @@ variables:
   CI: 1
   REDIS_URL: 'redis://redis:6379/1'
 
+cache:
+  key: $CI_PROJECT_NAME
+  paths:
+    - vendor/bundle
+
 services:
   - postgres
   - redis:latest
@@ -25,14 +30,14 @@ stages:
 build:
   stage: build
   script:
-    - bundle install
+    - bundle install --path vendor/bundle
 
 rubocop:
   stage: test
   cache:
     policy: pull
   script:
-    - bundle install
+    - bundle install --path vendor/bundle
     - bundle exec rubocop
 
 test:
@@ -45,7 +50,7 @@ test:
   variables:
     COVERAGE: 1
   script:
-    - bundle install
+    - bundle install --path vendor/bundle
     - bin/rails db:create
     - bin/rails db:test:prepare
     - bin/rails test
