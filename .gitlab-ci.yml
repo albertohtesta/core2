@@ -29,6 +29,8 @@ stages:
 
 build:
   stage: build
+  cache:
+    <<: *global_cache
   script:
     - bundle install
 
@@ -36,6 +38,7 @@ rubocop:
   stage: test
   cache:
     policy: pull
+    <<: *global_cache
   script:
     - bundle install
     - bundle exec rubocop
@@ -44,6 +47,7 @@ test:
   stage: test
   cache:
     policy: pull
+    <<: *global_cache
   artifacts:
     paths:
       - 'coverage/'
