@@ -14,7 +14,7 @@ ENV RACK_ENV=$RAILS_ENV
 
 RUN gem install bundler
 
-RUN if [[ "$RAILS_ENV" == "production" ]]; then bundle install --without development test; else bundle install; fi
+RUN bundle install
 
 COPY . ./
 
