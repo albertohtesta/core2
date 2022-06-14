@@ -12,5 +12,5 @@ config/deploy
 core-frontend/
 services/
 coverage/
-.env
+.env.dev.local
 tags
