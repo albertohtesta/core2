@@ -1,22 +1,52 @@
 # Norden Core Services - Backend
 
-## Ruby and rails versions
-* **Rails 7.0.2**
-* **Ruby 3.1.1**
-
 ## System dependencies
+* Docker (If you are on macOS use the desktop version 😁)
+* Ruby 3.1.1
+* Rails 7.0.2
 
 ## Configuration
+### Load the containers
+Since Docker loads all the dependencies as containers, all you have to do is clone the repo and run 
+```console
+docker-compose up --build
+```
+That will fetch you rails, redis, postgres, rabbitMQ, sidekiq and prepare the ground for the backend and frontend projects.
 
-## Database
-### Creation
-### Initialization
+### Set the data up
+Now, in another console prompt, run 
+```console
+docker-compose exec core-backend sh
+```
+to bring up the **core-backend** container shell. Inside the shell, create the development and testing databases with 
+```console
+rails db:init
+```
+and then run the migrations with 
+```console
+rails db:migrate
+```
+Leave the shell with `exit`.
+
+### Initialization of the frontend submodule
+The core-frontend project has been added as a git submodule to be used within this project. Please run 
+```console
+git submodule update --init --recursive
+```
+in the root path to clone the project locally. **DO NOT** clone it manually.
+
+### Finishing steps
+You should be ready to go! Below you can find some [docker commands](#docker) that might prove useful in your development process.
+If you need the **master.key** or need help with anything else please reach out to the team.
 
 ## Testing
+**Soon**
 
 ## Services (job queues, cache servers, search engines, etc.)
+**Soon**
 
 ## Deployment
+**Soon**
 
 
 ## Docker
