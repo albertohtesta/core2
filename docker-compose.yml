@@ -45,9 +45,9 @@ services:
   pg:
     image: postgres:14.3-alpine
     restart: always
-    env_file: .env.dev
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env.dev
+      - .env.dev.local
     ports:
       - "5432:5432"
     volumes:
@@ -82,7 +82,9 @@ services:
       - redis
     volumes:
       - .:/core
-    env_file: .env.dev
+    env_file:
+      - .env.dev
+      - .env.dev.local
 
 volumes:
   gem_cache:

@@ -2,7 +2,7 @@ image: registry.michelada.io/norden/core-backend/core-backend:latest
 
 variables:
   RAILS_ENV: "test"
-  DB_PASSWORD: postgres
+  POSTGRES_PASSWORD: postgres
   DB_USER: postgres
   DB_HOST: postgres
   RABBIT_HOST: rabbitmq
