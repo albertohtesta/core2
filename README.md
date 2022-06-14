@@ -15,10 +15,13 @@ git submodule update --init --recursive
 ```
 in the root path to clone the project locally. **DO NOT** clone it manually.
 
+### Create the env file
+Copy the contents of `.env.dev` and paste them into a new file called `.env.dev.local`.
+
 ### Load the containers
 Since Docker loads all the dependencies as containers, all you have to do is clone the repo and run 
 ```console
-docker-compose up --build
+docker-compose --env-file .env.dev.local up --build
 ```
 That will fetch you rails, redis, postgres, rabbitMQ, sidekiq and prepare the ground for the backend and frontend projects.
 
