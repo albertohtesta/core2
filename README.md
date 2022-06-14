@@ -6,6 +6,15 @@
 * Rails 7.0.2
 
 ## Configuration
+Please follow the steps below in the order they are presented.
+
+### Initialization of the frontend submodule
+The core-frontend project has been added as a git submodule to be used within this project. Please run 
+```console
+git submodule update --init --recursive
+```
+in the root path to clone the project locally. **DO NOT** clone it manually.
+
 ### Load the containers
 Since Docker loads all the dependencies as containers, all you have to do is clone the repo and run 
 ```console
@@ -27,13 +36,6 @@ and then run the migrations with
 rails db:migrate
 ```
 Leave the shell with `exit`.
-
-### Initialization of the frontend submodule
-The core-frontend project has been added as a git submodule to be used within this project. Please run 
-```console
-git submodule update --init --recursive
-```
-in the root path to clone the project locally. **DO NOT** clone it manually.
 
 ### Finishing steps
 You should be ready to go! Below you can find some [docker commands](#docker) that might prove useful in your development process.
