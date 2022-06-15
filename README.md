@@ -21,12 +21,18 @@ Copy the contents of `.env.dev` and paste them into a new file called `.env.dev.
 ### Load the containers
 Since Docker loads all the dependencies as containers, all you have to do is clone the repo and run 
 ```console
-docker-compose --env-file .env.dev.local up --build
+docker-compose run core-backend sh -c “./bin/setup”
 ```
-That will fetch you rails, redis, postgres, rabbitMQ, sidekiq and prepare the ground for the backend and frontend projects.
+and then:
+```console
+docker-compose --env-file .env.dev.local up
+```
+That will fetch you rails, redis, postgres, rabbitMQ, sidekiq, download and install the needed gems, setup the DB and prepare the ground for the backend and frontend projects.
 
 ### Set the data up
-Now, in another console prompt, run 
+**_This step is only necessary if you could not create the DB with the first command from the section above._**
+
+While the container is running, in another console prompt, run 
 ```console
 docker-compose exec core-backend sh
 ```
