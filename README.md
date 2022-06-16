@@ -50,6 +50,9 @@ Leave the shell with `exit`.
 You should be ready to go! Below you can find some [docker commands](https://git.michelada.io/norden/core-backend/-/wikis/Docker) that might prove useful in your development process.
 If you need the **master.key** or need help with anything else please reach out to the team.
 
+### Best practices
+Check out our [gitflow styleguide](https://git.michelada.io/norden/core-backend/-/wikis/Gitflow) on creating well-named branches and writing good commits before adding your code.
+
 ## Testing
 **Soon**
 
