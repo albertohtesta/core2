@@ -7,4 +7,11 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   get "/build_info", to: "info#build_info"
+  namespace :api do
+    namespace :v1 do
+      scope module: :users do
+        resource :registrations, only: :create
+      end
+    end
+  end
 end
