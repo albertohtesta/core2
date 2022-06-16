@@ -1,4 +1,4 @@
-image: registry.michelada.io/norden/core-backend/core-backend:latest
+image: registry.michelada.io/norden/core-backend:latest
 
 variables:
   RAILS_ENV: "test"

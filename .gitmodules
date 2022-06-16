@@ -1,3 +1,15 @@
 [submodule "core-frontend"]
 	path = core-frontend
 	url = git@git.michelada.io:norden/core-frontend.git
+[submodule "services/clients-backend"]
+	path = services/clients-backend
+	url = git@git.michelada.io:norden/clients-backend.git
+[submodule "services/clients-frontend"]
+	path = services/clients-frontend
+	url = git@git.michelada.io:norden/clients-frontend.git
+[submodule "services/collaborators-backend"]
+	path = services/collaborators-backend
+	url = git@git.michelada.io:norden/collaborators-backend.git
+[submodule "services/collaborators-frontend"]
+	path = services/collaborators-frontend
+	url = git@git.michelada.io:norden/collaborators-frontend.git
