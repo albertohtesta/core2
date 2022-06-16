@@ -14,7 +14,7 @@ ENV RACK_ENV=$RAILS_ENV
 
 RUN gem install bundler
 
-RUN bundle install
+RUN bundle install --path=vendor/bundle
 
 COPY . ./
 

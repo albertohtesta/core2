@@ -2,11 +2,12 @@ version: '3.9'
 
 services:
   core-backend:
+    image: registry.michelada.io/norden/core-backend:latest
     build:
       context: .
       dockerfile: Dockerfile.dev
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
-    depends_on:     
+    depends_on:
       - pg
       - rabbitmq
       - redis
@@ -15,19 +16,20 @@ services:
       - "3000:3000"
     volumes:
       - .:/core-backend
-      - gem_cache:/core-backend/vendor/bundle
+      - core_gem_cache:/core-backend/vendor/bundle
     env_file:
       - .env.dev
       - .env.dev.local
     tty: true
     stdin_open: true
-    environment:      
+    environment:
       RAILS_ENV: development
       DB_HOST: pg
       BUNDLE_PATH: /core-backend/vendor/bundle
       PORT: 3000
 
   core-frontend:
+    image: registry.michelada.io/norden/core-frontend:latest
     build:
       context: ./core-frontend
       dockerfile: Dockerfile.dev
@@ -37,10 +39,97 @@ services:
       - "4000:4000"
     volumes:
       - ./core-frontend:/core-frontend
-      - node_cache:/core-frontend/node_modules
+      - core_node_cache:/core-frontend/node_modules
     environment:
       NODE_ENV: development
       PORT: 4000
+
+  clients-backend:
+    image: registry.michelada.io/norden/clients-backend:latest
+    build:
+      context: ./services/clients-backend
+      dockerfile: Dockerfile.dev
+    command: bundle exec rails s -p 3001 -b '0.0.0.0'
+    depends_on:
+      - pg
+      - rabbitmq
+      - redis
+      - sidekiq
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./services/clients-backend:/clients-backend
+      - clients_gem_cache:/clients-backend/vendor/bundle
+    env_file:
+      - .env.dev
+      - .env.dev.local
+    tty: true
+    stdin_open: true
+    environment:
+      RAILS_ENV: development
+      DB_HOST: pg
+      BUNDLE_PATH: /clients-backend/vendor/bundle
+      PORT: 3001
+
+  clients-frontend:
+    image: registry.michelada.io/norden/clients-frontend:latest
+    build:
+      context: ./services/clients-frontend
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - clients-backend
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./services/clients-frontend:/clients-frontend
+      - clients_node_cache:/clients-frontend/node_modules
+    environment:
+      NODE_ENV: development
+      PORT: 4001
+
+  collaborators-backend:
+    image: registry.michelada.io/norden/collaborators-backend:latest
+    build:
+      context: ./services/collaborators-backend
+      dockerfile: Dockerfile.dev
+    command: bundle exec rails s -p 3002 -b '0.0.0.0'
+    depends_on:
+      - pg
+      - rabbitmq
+      - redis
+      - sidekiq
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./services/collaborators-backend:/collaborators-backend
+      - collaborators_gem_cache:/collaborators-backend/vendor/bundle
+    env_file:
+      - .env.dev
+      - .env.dev.local
+    tty: true
+    stdin_open: true
+    environment:
+      RAILS_ENV: development
+      DB_HOST: pg
+      DATABASE_NAME: collaborators_backend
+      BUNDLE_PATH: /collaborators-backend/vendor/bundle
+      PORT: 3002
+
+  collaborators-frontend:
+    image: registry.michelada.io/norden/collaborators-frontend:latest
+    build:
+      context: ./services/collaborators-frontend
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - collaborators-backend
+    ports:
+      - "4002:4002"
+    volumes:
+      - ./services/collaborators-frontend:/collaborators-frontend
+      - collaborators_node_cache:/collaborators-frontend/node_modules
+    environment:
+      NODE_ENV: development
+      PORT: 4002
 
   pg:
     image: postgres:14.3-alpine
@@ -55,7 +144,7 @@ services:
 
   redis:
     image: redis:7.0-alpine
-    env_file: 
+    env_file:
       - .env.dev
       - .env.dev.local
     ports:
@@ -87,8 +176,12 @@ services:
       - .env.dev.local
 
 volumes:
-  gem_cache:
-  node_cache:
+  core_gem_cache:
+  core_node_cache:
+  clients_gem_cache:
+  clients_node_cache:
+  collaborators_gem_cache:
+  collaborators_node_cache:
   db_data:
   rabbitmq_data:
   rabbitmq_log:
