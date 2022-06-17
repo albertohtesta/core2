@@ -21,7 +21,7 @@ Copy the contents of `.env.dev` and paste them into a new file called `.env.dev.
 ### Load the containers
 Since Docker loads all the dependencies as containers, all you have to do is clone the repo and run 
 ```console
-docker-compose run core-backend sh -c “./bin/setup”
+docker-compose run core-backend sh -c "./bin/setup"
 ```
 and then:
 ```console
@@ -38,11 +38,11 @@ docker-compose exec core-backend sh
 ```
 to bring up the **core-backend** container shell. Inside the shell, create the development and testing databases with 
 ```console
-rails db:init
+bin/rails db:create
 ```
 and then run the migrations with 
 ```console
-rails db:migrate
+bin/rails db:migrate
 ```
 Leave the shell with `exit`.
 
@@ -51,7 +51,7 @@ You should be ready to go! Below you can find some [docker commands](https://git
 If you need the **master.key** or need help with anything else please reach out to the team.
 
 ### Best practices
-Check out our [gitflow styleguide](https://git.michelada.io/norden/core-backend/-/wikis/Gitflow) on creating well-named branches and writing good commits before adding your code.
+Check out our [gitflow styleguide](https://git.michelada.io/norden/core-backend/-/wikis/Gitflow:-Branch-and-commit-creation-style-guide) on creating well-named branches and writing good commits before adding your code.
 
 ## Testing
 **Soon**
