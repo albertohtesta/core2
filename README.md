@@ -8,12 +8,15 @@
 ## Configuration
 Please follow the steps below in the order they are presented.
 
-### Initialization of the frontend submodule
-The core-frontend project has been added as a git submodule to be used within this project. Please run 
+### Cloning the project
+This project is composed of other projects as submodules. To add them from the start, please run
+```console
+git clone --recurse-submodules git@git.michelada.io:norden/core-backend.git
+```
+If you already had this project, you can add the submodules with
 ```console
 git submodule update --init --recursive
 ```
-in the root path to clone the project locally. **DO NOT** clone it manually.
 
 ### Create the env file
 Copy the contents of `.env.dev` and paste them into a new file called `.env.dev.local`.
