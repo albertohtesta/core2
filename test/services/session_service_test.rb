@@ -4,7 +4,7 @@ require "test_helper"
 
 class SessionServiceTest < ActiveSupport::TestCase
   setup do
-    @session_service = SessionService.new({ USERNAME: "test-registration@test.com", PASSWORD: "Password123!" })
+    @session_service = SessionService.new({ username: "test-registration@test.com", password: "Password123!" })
   end
 
   test "should authenticate user" do

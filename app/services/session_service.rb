@@ -13,7 +13,14 @@ class SessionService < CognitoService
       user_pool_id: POOL_ID,
       client_id: ENV.fetch("AWS_COGNITO_CLIENT_ID", nil),
       auth_flow: "ADMIN_NO_SRP_AUTH",
-      auth_parameters: @user_object
+      auth_parameters: session_params
+    }
+  end
+
+  def session_params
+    @session_params ||= {
+      USERNAME: @user_object[:username],
+      PASSWORD: @user_object[:password]
     }
   end
 end
