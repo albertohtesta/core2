@@ -9,6 +9,7 @@ class CognitoService < ApplicationService
     stub_responses: Rails.env.test?
   ).freeze
 
+  CLIENT_ID = ENV.fetch("AWS_COGNITO_CLIENT_ID", nil).freeze
   POOL_ID = ENV.fetch("AWS_COGNITO_POOL_ID", nil).freeze
 
   def initialize(user_object)
