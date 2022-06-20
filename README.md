@@ -49,6 +49,12 @@ bin/rails db:migrate
 ```
 Leave the shell with `exit`.
 
+### Run test 
+to bring up the **core-backend** container shell. Inside the shell run test
+```console
+bin/rails t
+```
+
 ### Finishing steps
 You should be ready to go! Below you can find some [docker commands](https://git.michelada.io/norden/core-backend/-/wikis/Docker) that might prove useful in your development process.
 If you need the **master.key** or need help with anything else please reach out to the team.
