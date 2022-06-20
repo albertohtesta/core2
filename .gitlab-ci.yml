@@ -31,8 +31,16 @@ services:
 
 stages:
   - build
+  - rubocop
   - test
+  - publish-image
+  - publish-image-qa
+  - publish-image-staging
+  - publish-image-production
   - deploy
+  - deploy-qa
+  - deploy-staging
+  - deploy-production
 
 build:
   stage: build
@@ -42,7 +50,7 @@ build:
     - bundle install
 
 rubocop:
-  stage: test
+  stage: rubocop
   cache:
     <<: *global_cache
     policy: pull
@@ -65,3 +73,91 @@ test:
     - bin/rails db:create
     - bin/rails db:test:prepare
     - bin/rails test
+
+publish-image-qa:
+  stage: publish-image
+  needs: ["test"]
+  image: 
+    name: amazon/aws-cli
+    entrypoint: [""]
+  before_script:
+    - amazon-linux-extras install docker
+    - yum install -y sudo gcc-c++ make curl
+    - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+  script:
+    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA --target builder -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA .
+    - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA
+  only:
+    - main
+  after_script:
+    - echo after script
+
+publish-image-staging:
+  stage: publish-image
+  needs: ["test"]
+  image: 
+    name: amazon/aws-cli
+    entrypoint: [""]
+  before_script:
+    - amazon-linux-extras install docker
+    - yum install -y sudo gcc-c++ make curl
+    - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+  script:
+    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA --target builder -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA .
+    - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA
+  only:
+    - staging
+  after_script:
+    - echo after script
+
+publish-image-production:
+  stage: publish-image
+  image: 
+    name: amazon/aws-cli
+    entrypoint: [""]
+  needs: ["test"]
+  before_script:
+    - amazon-linux-extras install docker
+    - yum install -y sudo gcc-c++ make curl
+    - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+  script:
+    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA --target builder -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA .
+    - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA
+  only:
+    - develop
+  after_script:
+    - echo after script
+
+#Update the service with the new task definition 
+deploy-qa:
+  stage: deploy
+  extends: publish-image-qa
+  needs: ["build","test","publish-image-qa"]
+  script:
+    - echo qa deploy
+  only:
+    - main
+  after_script:
+    - echo after script
+
+deploy-staging:
+  stage: deploy
+  extends: publish-image-staging
+  needs: ["build","test","publish-image-staging"]
+  script:
+    - echo staging deploy
+  only:
+    - staging
+  after_script:
+    - echo after script
+
+deploy-production:
+  stage: deploy
+  extends: publish-image-production
+  needs: ["build","test","publish-image-production"]
+  script:
+    - echo production deploy
+  only:
+    - develop
+  after_script:
+    - echo after script
