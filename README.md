@@ -28,7 +28,7 @@ docker-compose run core-backend sh -c "./bin/setup"
 ```
 and then:
 ```console
-docker-compose --env-file .env.dev.local up core-backend
+docker-compose up core-backend
 ```
 That will fetch you rails, redis, postgres, rabbitMQ, sidekiq, download and install the needed gems, setup the DB and prepare the ground for the backend and frontend projects.
 
