@@ -8,7 +8,7 @@
 ## Configuration
 Please follow the steps below in the order they are presented.
 
-### Cloning the project
+### Clone the project
 This project is composed of other projects as submodules. To add them from the start, please run
 ```console
 git clone --recurse-submodules git@git.michelada.io:norden/core-backend.git
@@ -18,8 +18,14 @@ If you already had this project, you can add the submodules with
 git submodule update --init --recursive
 ```
 
+### Update the submodules
+In order to update the submodules of this project, please run
+```console
+git submodule update --recursive
+```
+
 ### Create the env file
-Copy the contents of `.env.dev` and paste them into a new file called `.env.dev.local`.
+Copy the contents of `.env.dev` and paste them into a new file called `.env.dev.local`. Or you can create a new file with `touch .env.dev.local`.
 
 ### Load the containers
 Since Docker loads all the dependencies as containers, all you have to do is clone the repo and run 
@@ -35,7 +41,7 @@ That will fetch you rails, redis, postgres, rabbitMQ, sidekiq, download and inst
 ### Set the data up
 **_This step is only necessary if you could not create the DB with the first command from the section above._**
 
-While the container is running, in another console prompt, run 
+**While the container is running**, in another console prompt, run 
 ```console
 docker-compose exec core-backend sh
 ```
