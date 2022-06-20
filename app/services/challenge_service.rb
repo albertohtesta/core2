@@ -18,7 +18,7 @@ class ChallengeService < CognitoService
 
   def challenge_obj
     @challenge_obj ||= {
-      client_id: POOL_ID,
+      client_id: CLIENT_ID,
       challenge_name: @user_object[:challenge_name],
       session: @user_object[:session],
       challenge_responses: {
