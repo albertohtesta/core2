@@ -63,11 +63,18 @@ If you need the **master.key** or need help with anything else please reach out 
 Check out our [gitflow styleguide](https://git.michelada.io/norden/core-backend/-/wikis/Gitflow) on creating well-named branches and writing good commits before adding your code.
 
 ## Testing
-
-### Run test 
-to bring up the **core-backend** container shell. Inside the shell run test
+To run the test suite open another console prompt and, **while the container is running**, you can either run 
 ```console
-bin/rails t
+docker-compose exec core-backend bin/rails test
+```
+or enter the container''s shell with
+```console
+docker-compose exec core-backend sh
+```
+
+and run
+```console
+bin/rails test
 ```
 
 ## Services (job queues, cache servers, search engines, etc.)
