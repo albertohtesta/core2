@@ -25,7 +25,6 @@ class RegistrationService < CognitoService
     @auth_object ||= {
       user_pool_id: POOL_ID,
       username: @user_object[:email],
-      user_attributes:,
       desired_delivery_mediums: ["EMAIL"]
     }
   end
@@ -36,14 +35,5 @@ class RegistrationService < CognitoService
       username: @user_object[:email],
       group_name: @user_object[:group_name]
     }
-  end
-
-  def user_attributes
-    [
-      {
-        name: "name",
-        value: @user_object[:name]
-      }
-    ]
   end
 end
