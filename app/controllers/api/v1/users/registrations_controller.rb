@@ -18,7 +18,7 @@ module Api
         private
 
         def registration_params
-          params.require(:registration).permit(:name, :email, :group_name)
+          params.require(:registration).permit(:email, :group_name)
         end
       end
     end
