@@ -5,6 +5,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - 'bin/**/*'
+    - 'services/**/*'
 
 Style/StringLiterals:
   Enabled: true
