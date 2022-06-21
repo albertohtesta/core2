@@ -27,6 +27,17 @@ git submodule update --recursive
 ### Create the env file
 Copy the contents of `.env.dev` and paste them into a new file called `.env.dev.local`. Or you can create a new file with `touch .env.dev.local`.
 
+### Install overcommit
+We use [overcommit](https://github.com/sds/overcommit) in this project to enforce best practices. To install it, please run
+```console
+gem install overcommit
+```
+
+and then run
+```console
+overcommit --install
+```
+
 ### Load the containers
 Since Docker loads all the dependencies as containers, all you have to do is clone the repo and run 
 ```console
