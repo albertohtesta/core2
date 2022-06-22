@@ -8,7 +8,8 @@ class SessionServiceTest < ActiveSupport::TestCase
   end
 
   test "should authenticate user" do
+    session = @session_service.authenticate
     assert_instance_of(Aws::CognitoIdentityProvider::Types::AuthenticationResultType,
-                       @session_service.authenticate.authentication_result)
+                       session.authentication_result)
   end
 end
