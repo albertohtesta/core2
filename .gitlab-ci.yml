@@ -91,7 +91,6 @@ publish-image-qa:
     - sed -i "s/#BUILD_BRANCH#/$CI_COMMIT_REF_NAME/" build-info.json
     - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA -f Dockerfile.Qa -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA .
     - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA
-  when: manual 
   except:
     - main
     - develop
@@ -118,7 +117,6 @@ deploy-qa:
     - aws ecs register-task-definition --cli-input-json file://input.json --region $AWS_DEFAULT_REGION 
     - revision=$(aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-qa --region $AWS_DEFAULT_REGION | egrep "revision" | tr "/" " " | awk '{print $2}' | sed 's/"$//' | cut -d "," -f 1)
     - aws ecs update-service --cluster $PREFIX-qa --service $PREFIX-$CI_PROJECT_NAME-qa  --task-definition $PREFIX-$CI_PROJECT_NAME-qa:$revision --region $AWS_DEFAULT_REGION
-  when: manual 
   except:
     - main
     - develop
