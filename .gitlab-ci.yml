@@ -74,90 +74,54 @@ test:
     - bin/rails db:test:prepare
     - bin/rails test
 
+
 publish-image-qa:
   stage: publish-image
+  extends: test
   needs: ["test"]
   image: 
     name: amazon/aws-cli
     entrypoint: [""]
   before_script:
     - amazon-linux-extras install docker
-    - yum install -y sudo gcc-c++ make curl
     - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
   script:
-    - docker build -f Dockerfile.Qa --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA .
+    - sed -i "s/#BUILD_ID#/$CI_COMMIT_SHORT_SHA/" build-info.json
+    - sed -i "s/#BUILD_DATE#/$(TZ=':UTC' date)/" build-info.json
+    - sed -i "s/#BUILD_BRANCH#/$CI_COMMIT_REF_NAME/" build-info.json
+    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA -f Dockerfile.Qa -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA .
     - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA
-  only:
+  when: manual 
+  except:
     - main
-  after_script:
-    - echo after script
-
-publish-image-staging:
-  stage: publish-image
-  needs: ["test"]
-  image: 
-    name: amazon/aws-cli
-    entrypoint: [""]
-  before_script:
-    - amazon-linux-extras install docker
-    - yum install -y sudo gcc-c++ make curl
-    - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
-  script:
-    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA .
-    - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA
-  only:
-    - staging
-  after_script:
-    - echo after script
-
-publish-image-production:
-  stage: publish-image
-  image: 
-    name: amazon/aws-cli
-    entrypoint: [""]
-  needs: ["test"]
-  before_script:
-    - amazon-linux-extras install docker
-    - yum install -y sudo gcc-c++ make curl
-    - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
-  script:
-    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA .
-    - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA
-  only:
     - develop
+    - /^release\/.*$/
   after_script:
     - echo after script
+
 
 #Update the service with the new task definition 
 deploy-qa:
   stage: deploy
   extends: publish-image-qa
   needs: ["build","test","publish-image-qa"]
+  before_script:
+    - amazon-linux-extras install docker
+    - yum install -y util-linux pciutils usbutils coreutils binutils findutils grep jq
   script:
-    - echo qa deploy
-  only:
+    - COMPLETE_ROUTE="$DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA"
+    - echo `aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-qa --region $AWS_DEFAULT_REGION` > input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].image="#COMPLETE_ROUTE#"') >  input.json
+    - sed -i "s@#COMPLETE_ROUTE#@$COMPLETE_ROUTE@" input.json
+    - echo $(cat input.json | jq '.taskDefinition') > input.json
+    - echo $(cat input.json | jq  'del(.taskDefinitionArn)' | jq 'del(.revision)' | jq 'del(.status)' | jq 'del(.requiresAttributes)' | jq 'del(.compatibilities) | del(.registeredAt) | del(.registeredBy)') > input.json
+    - aws ecs register-task-definition --cli-input-json file://input.json --region $AWS_DEFAULT_REGION 
+    - revision=$(aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-qa --region $AWS_DEFAULT_REGION | egrep "revision" | tr "/" " " | awk '{print $2}' | sed 's/"$//' | cut -d "," -f 1)
+    - aws ecs update-service --cluster $PREFIX-qa --service $PREFIX-$CI_PROJECT_NAME-qa  --task-definition $PREFIX-$CI_PROJECT_NAME-qa:$revision --region $AWS_DEFAULT_REGION
+  when: manual 
+  except:
     - main
-  after_script:
-    - echo after script
-
-deploy-staging:
-  stage: deploy
-  extends: publish-image-staging
-  needs: ["build","test","publish-image-staging"]
-  script:
-    - echo staging deploy
-  only:
-    - staging
-  after_script:
-    - echo after script
-
-deploy-production:
-  stage: deploy
-  extends: publish-image-production
-  needs: ["build","test","publish-image-production"]
-  script:
-    - echo production deploy
-  only:
     - develop
+    - /^release\/.*$/
   after_script:
     - echo after script
