@@ -77,8 +77,8 @@ test:
 
 publish-image-qa:
   stage: publish-image
-  extends: test-eslint
-  needs: ["test-eslint"]
+  extends: test
+  needs: ["test"]
   before_script:
     - amazon-linux-extras install docker
     - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
@@ -98,8 +98,8 @@ publish-image-qa:
 
 publish-image-staging:
   stage: publish-image
-  extends: test-eslint
-  needs: ["test-eslint"]
+  extends: test
+  needs: ["test"]
   before_script:
     - amazon-linux-extras install docker
     - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
@@ -117,8 +117,8 @@ publish-image-staging:
 
 publish-image-production:
   stage: publish-image
-  extends: test-eslint
-  needs: ["test-eslint"]
+  extends: test
+  needs: ["test"]
   before_script:
     - amazon-linux-extras install docker
     - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
@@ -137,7 +137,7 @@ publish-image-production:
 deploy-qa:
   stage: deploy
   extends: build
-  needs: ["build","test-eslint","publish-image-qa"]
+  needs: ["build","test","publish-image-qa"]
   before_script:
     - amazon-linux-extras install docker
     - yum install -y util-linux pciutils usbutils coreutils binutils findutils grep jq
@@ -162,7 +162,7 @@ deploy-qa:
 deploy-staging:
   stage: deploy
   extends: build
-  needs: ["build","test-eslint","publish-image-staging"]
+  needs: ["build","test","publish-image-staging"]
   before_script:
     - amazon-linux-extras install docker
     - yum install -y util-linux pciutils usbutils coreutils binutils findutils grep jq
@@ -183,7 +183,7 @@ deploy-staging:
 deploy-production:
   stage: deploy
   extends: build
-  needs: ["build","test-eslint","publish-image-production"]
+  needs: ["build","test","publish-image-production"]
   before_script:
     - amazon-linux-extras install docker
     - yum install -y jq
