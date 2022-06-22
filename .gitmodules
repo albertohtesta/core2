@@ -13,3 +13,6 @@
 [submodule "services/collaborators-frontend"]
 	path = services/collaborators-frontend
 	url = git@git.michelada.io:norden/collaborators-frontend.git
+[submodule "services/bi-frontend"]
+	path = services/bi-frontend
+	url = git@git.michelada.io:norden/bi-frontend.git
