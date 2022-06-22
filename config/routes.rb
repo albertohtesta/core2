@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       scope module: :users do
         resource :registrations, only: :create
         resource :passwords, only: :create
+        resource :sessions, only: :create
       end
     end
   end

@@ -2,17 +2,24 @@
 
 # authenticate cognito user
 class SessionService < CognitoService
+  attr_reader :error
+
   def authenticate
-    CLIENT.admin_initiate_auth(auth_object)
+    begin
+      resp = CLIENT.initiate_auth(auth_object)
+    rescue StandardError => e
+      @error = e
+      return false
+    end
+    resp
   end
 
   private
 
   def auth_object
     @auth_object ||= {
-      user_pool_id: POOL_ID,
       client_id: CLIENT_ID,
-      auth_flow: "ADMIN_NO_SRP_AUTH",
+      auth_flow: "USER_PASSWORD_AUTH",
       auth_parameters: session_params
     }
   end
