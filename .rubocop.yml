@@ -6,6 +6,7 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'services/**/*'
+    - 'documentation/**/*'
 
 Style/StringLiterals:
   Enabled: true
@@ -18,3 +19,4 @@ Style/StringLiteralsInInterpolation:
 Lint/MissingSuper:
   Exclude:
     - 'app/services/**/*'
+    - 'documentation/**/*'
