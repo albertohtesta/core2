@@ -74,6 +74,7 @@ test:
     - bin/rails db:test:prepare
     - bin/rails test
 
+
 publish-image-qa:
   stage: publish-image
   extends: test
@@ -140,6 +141,7 @@ publish-image-production:
     - main
   after_script:
     - echo after script
+
 
 #Update the service with the new task definition 
 deploy-qa:
