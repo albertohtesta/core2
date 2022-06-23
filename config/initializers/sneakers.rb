@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-Sneakers.configure  heartbeat: 30,
-                    amqp: "amqp://guest:guest@#{ENV.fetch("RABBIT_HOST")}:#{ENV.fetch("RABBIT_PORT")}",
-                    vhost: "/",
-                    exchange: "sneakers",
-                    exchange_type: :direct
+rabbit_host = ENV.fetch("RABBIT_HOST", "rabbitmq")
+rabbit_port = ENV.fetch("RABBIT_PORT", 5672)
+Sneakers.configure(
+  heartbeat: 30,
+  amqp: "amqp://guest:guest@#{rabbit_host}:#{rabbit_port}",
+  vhost: "/",
+  exchange: "sneakers",
+  exchange_type: :direct
+)
