@@ -142,7 +142,6 @@ publish-image-production:
   after_script:
     - echo after script
 
-
 #Update the service with the new task definition 
 deploy-qa:
   stage: deploy

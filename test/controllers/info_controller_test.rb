@@ -4,14 +4,14 @@ require "test_helper"
 
 class InfoControllerTest < ActionDispatch::IntegrationTest
   setup do
-    get "/build_info"
+    get "/build-info"
   end
 
-  test "should get build_info" do
+  test "should get build-info" do
     assert_response :success
   end
 
-  test "should get build_info body" do
+  test "should get build-info body" do
     expected_response = {
       build_id: "#BUILD_ID#",
       build_date: "#BUILD_DATE#",
