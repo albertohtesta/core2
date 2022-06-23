@@ -92,7 +92,7 @@ publish-image-qa:
     - sed -i "s;#BUILD_ID#;$CI_COMMIT_SHORT_SHA;" ./build-info.json
     - sed -i "s;#BUILD_DATE#;$(TZ=':UTC' date);" ./build-info.json
     - sed -i "s;#BUILD_BRANCH#;$CI_COMMIT_REF_NAME;" ./build-info.json
-    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA --target builder -f Dockerfile.Qa -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA .
+    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA -f Dockerfile.Qa -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA .
     - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA
   when: manual
   except:
@@ -119,7 +119,7 @@ publish-image-staging:
     - sed -i "s;#BUILD_ID#;$CI_COMMIT_SHORT_SHA;" ./build-info.json
     - sed -i "s;#BUILD_DATE#;$(TZ=':UTC' date);" ./build-info.json
     - sed -i "s;#BUILD_BRANCH#;$CI_COMMIT_REF_NAME;" ./build-info.json
-    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA --target builder -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA .
+    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA .
     - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA
   when: manual
   only:
@@ -144,7 +144,7 @@ publish-image-production:
     - sed -i "s;#BUILD_ID#;$CI_COMMIT_SHORT_SHA;" ./build-info.json
     - sed -i "s;#BUILD_DATE#;$(TZ=':UTC' date);" ./build-info.json
     - sed -i "s;#BUILD_BRANCH#;$CI_COMMIT_REF_NAME;" ./build-info.json
-    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA --target builder -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA .
+    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA .
     - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA
   only:
     - main
