@@ -79,6 +79,9 @@ publish-image-qa:
   stage: publish-image
   extends: test
   needs: ["test"]
+  image: 
+    name: amazon/aws-cli
+    entrypoint: [""]
   before_script:
     - amazon-linux-extras install docker
     - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
@@ -103,6 +106,9 @@ publish-image-staging:
   stage: publish-image
   extends: test
   needs: ["test"]
+  image: 
+    name: amazon/aws-cli
+    entrypoint: [""]
   before_script:
     - amazon-linux-extras install docker
     - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
@@ -125,6 +131,9 @@ publish-image-production:
   stage: publish-image
   extends: test
   needs: ["test"]
+  image: 
+    name: amazon/aws-cli
+    entrypoint: [""]
   before_script:
     - amazon-linux-extras install docker
     - aws --region $AWS_DEFAULT_REGION ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
@@ -145,7 +154,7 @@ publish-image-production:
 #Update the service with the new task definition 
 deploy-qa:
   stage: deploy
-  extends: build
+  extends: publish-image-qa
   needs: ["build","test","publish-image-qa"]
   before_script:
     - amazon-linux-extras install docker
@@ -170,7 +179,7 @@ deploy-qa:
 
 deploy-staging:
   stage: deploy
-  extends: build
+  extends: publish-image-staging
   needs: ["build","test","publish-image-staging"]
   before_script:
     - amazon-linux-extras install docker
@@ -191,7 +200,7 @@ deploy-staging:
 
 deploy-production:
   stage: deploy
-  extends: build
+  extends: publish-image-production
   needs: ["build","test","publish-image-production"]
   before_script:
     - amazon-linux-extras install docker
