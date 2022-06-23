@@ -6,8 +6,9 @@ class RegistrationService < CognitoService
 
   def create_user
     begin
-      CLIENT.admin_create_user(auth_object)
+      resp = CLIENT.admin_create_user(auth_object)
       add_user_to_group
+      add_user_to_table(resp)
     rescue StandardError => e
       @error = e
       return false
@@ -19,6 +20,17 @@ class RegistrationService < CognitoService
 
   def add_user_to_group
     CLIENT.admin_add_user_to_group(group_object)
+  end
+
+  def add_user_to_table(params)
+    User.new(
+      {
+        email: auth_object[:username],
+        status: params.user.user_status,
+        uid: params.user.username,
+        role: group_object[:group_name]
+      }
+    ).save
   end
 
   def auth_object
