@@ -22,4 +22,13 @@ class RegistrationServiceTest < ActiveSupport::TestCase
 
     assert_equal("missing required parameter params[:group_name]", registration_service.error.message)
   end
+
+  test "should add user to pg database" do
+    registration_service = RegistrationService.new({ email: "test-registration@test.com",
+                                                     group_name: "test" })
+
+    assert_difference "User.count" do
+      registration_service.create_user
+    end
+  end
 end

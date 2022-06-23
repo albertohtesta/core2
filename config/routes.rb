@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         resource :registrations, only: :create
         resource :passwords, only: :create
         resource :sessions, only: :create
+        resources :users, only: :index
       end
     end
   end
