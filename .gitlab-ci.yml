@@ -50,7 +50,7 @@ build:
     - bundle install
 
 rubocop:
-  stage: rubocop
+  stage: test
   cache:
     <<: *global_cache
     policy: pull
@@ -79,7 +79,7 @@ publish-image-qa:
   stage: publish-image
   extends: test
   needs: ["test"]
-  image: 
+  image:
     name: amazon/aws-cli
     entrypoint: [""]
   before_script:
@@ -94,7 +94,7 @@ publish-image-qa:
     - sed -i "s;#BUILD_BRANCH#;$CI_COMMIT_REF_NAME;" ./build-info.json
     - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA --target builder -f Dockerfile.Qa -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA .
     - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA
-  when: manual 
+  when: manual
   except:
     - main
     - develop
@@ -106,7 +106,7 @@ publish-image-staging:
   stage: publish-image
   extends: test
   needs: ["test"]
-  image: 
+  image:
     name: amazon/aws-cli
     entrypoint: [""]
   before_script:
@@ -121,7 +121,7 @@ publish-image-staging:
     - sed -i "s;#BUILD_BRANCH#;$CI_COMMIT_REF_NAME;" ./build-info.json
     - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA --target builder -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA .
     - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA
-  when: manual 
+  when: manual
   only:
     - /^release\/.*$/
   after_script:
@@ -131,7 +131,7 @@ publish-image-production:
   stage: publish-image
   extends: test
   needs: ["test"]
-  image: 
+  image:
     name: amazon/aws-cli
     entrypoint: [""]
   before_script:
@@ -151,7 +151,7 @@ publish-image-production:
   after_script:
     - echo after script
 
-#Update the service with the new task definition 
+#Update the service with the new task definition
 deploy-qa:
   stage: deploy
   extends: publish-image-qa
@@ -166,10 +166,10 @@ deploy-qa:
     - sed -i "s@#COMPLETE_ROUTE#@$COMPLETE_ROUTE@" input.json
     - echo $(cat input.json | jq '.taskDefinition') > input.json
     - echo $(cat input.json | jq  'del(.taskDefinitionArn)' | jq 'del(.revision)' | jq 'del(.status)' | jq 'del(.requiresAttributes)' | jq 'del(.compatibilities) | del(.registeredAt) | del(.registeredBy)') > input.json
-    - aws ecs register-task-definition --cli-input-json file://input.json --region $AWS_DEFAULT_REGION 
+    - aws ecs register-task-definition --cli-input-json file://input.json --region $AWS_DEFAULT_REGION
     - revision=$(aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-qa --region $AWS_DEFAULT_REGION | egrep "revision" | tr "/" " " | awk '{print $2}' | sed 's/"$//' | cut -d "," -f 1)
     - aws ecs update-service --cluster $PREFIX-qa --service $PREFIX-$CI_PROJECT_NAME-qa  --task-definition $PREFIX-$CI_PROJECT_NAME-qa:$revision --region $AWS_DEFAULT_REGION
-  when: manual 
+  when: manual
   except:
     - main
     - develop
@@ -189,10 +189,10 @@ deploy-staging:
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].image="$DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA"') >  input.json
     - echo $(cat input.json | jq '.taskDefinition') > input.json
     - echo $(cat input.json | jq  'del(.taskDefinitionArn)' | jq 'del(.revision)' | jq 'del(.status)' | jq 'del(.requiresAttributes)' | jq 'del(.compatibilities) | del(.registeredAt) | del(.registeredBy)') > input.json
-    - aws ecs register-task-definition --cli-input-json file://input.json --region $AWS_DEFAULT_REGION 
+    - aws ecs register-task-definition --cli-input-json file://input.json --region $AWS_DEFAULT_REGION
     - revision=$(aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-staging --region $AWS_DEFAULT_REGION | egrep "revision" | tr "/" " " | awk '{print $2}' | sed 's/"$//' | cut -d "," -f 1)
     - aws ecs update-service --cluster $PREFIX-staging --service $PREFIX-$CI_PROJECT_NAME-staging  --task-definition $PREFIX-$CI_PROJECT_NAME-staging:$revision --region $AWS_DEFAULT_REGION
-  when: manual 
+  when: manual
   only:
     - /^release\/.*$/
   after_script:
@@ -210,7 +210,7 @@ deploy-production:
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].image="$DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA"') >  input.json
     - echo $(cat input.json | jq '.taskDefinition') > input.json
     - echo $(cat input.json | jq  'del(.taskDefinitionArn)' | jq 'del(.revision)' | jq 'del(.status)' | jq 'del(.requiresAttributes)' | jq 'del(.compatibilities)') > input.json
-    - aws ecs register-task-definition --cli-input-json file://input.json --region $AWS_DEFAULT_REGION 
+    - aws ecs register-task-definition --cli-input-json file://input.json --region $AWS_DEFAULT_REGION
     - revision=$(aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-production --region $AWS_DEFAULT_REGION | egrep "revision" | tr "/" " " | awk '{print $2}' | sed 's/"$//' | cut -d "," -f 1)
     - aws ecs update-service --cluster $PREFIX-production --service $PREFIX-$CI_PROJECT_NAME-production  --task-definition $PREFIX-$CI_PROJECT_NAME-production:$revision --region $AWS_DEFAULT_REGION
   only:
