@@ -11,6 +11,7 @@ Rails.application.configure do
   config.cache_classes = false
 
   config.hosts << "localhost:4000"
+  config.hosts << "qa-core-api.nordhen.com"
 
   # Do not eager load code on boot.
   config.eager_load = false
