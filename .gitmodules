@@ -16,3 +16,6 @@
 [submodule "services/bi-frontend"]
 	path = services/bi-frontend
 	url = git@git.michelada.io:norden/bi-frontend.git
+[submodule "services/bi-backend"]
+	path = services/bi-backend
+	url = git@git.michelada.io:norden/bi-backend.git
