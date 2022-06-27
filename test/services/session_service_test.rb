@@ -12,4 +12,10 @@ class SessionServiceTest < ActiveSupport::TestCase
     assert_instance_of(Aws::CognitoIdentityProvider::Types::AuthenticationResultType,
                        session.authentication_result)
   end
+
+  test "should logout user" do
+    session = @session_service.authenticate
+
+    assert(SessionService.new(session.authentication_result).sign_out)
+  end
 end

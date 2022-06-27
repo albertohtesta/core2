@@ -10,4 +10,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  test "should user logout" do
+    delete api_v1_sessions_path,
+           params: { access_token: Faker::Alphanumeric.alphanumeric(number: 10) },
+           as: :json
+
+    assert_response :success
+  end
 end

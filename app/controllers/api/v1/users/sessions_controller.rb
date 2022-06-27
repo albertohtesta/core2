@@ -16,6 +16,17 @@ module Api
           end
         end
 
+        def destroy
+          session_service = SessionService.new(params)
+
+          if session_service.sign_out
+            render json: { status: :ok, code: 200, message: "Logout" },
+                   status: :ok
+          else
+            render json: { message: session_service.error, status: :bad_request, code: 400 }, status: :bad_request
+          end
+        end
+
         private
 
         def session_params
