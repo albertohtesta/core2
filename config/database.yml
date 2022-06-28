@@ -11,7 +11,7 @@ development:
   database: <%= ENV["DB_NAME"] %>
 test:
   <<: *default
-  database: core_backend_test
+  database: <%= ENV["DB_NAME"] %>
 production:
   <<: *default
   database: core_backend_production
