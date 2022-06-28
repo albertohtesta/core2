@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       scope module: :users do
         resource :registrations, only: :create
-        resource :passwords, only: :create
+        resource :passwords, only: %i[create update]
         resource :sessions, only: :create
         resources :users, only: :index
       end
