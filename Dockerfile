@@ -22,4 +22,4 @@ EXPOSE 80
 
 ENV PORT 80
 
-CMD bundle exec rails s -b '0.0.0.0' -p 80
+CMD bundle exec rails s -p 80 -b '0.0.0.0'
