@@ -7,7 +7,7 @@ class ForgotPasswordsControllerTest < ActionDispatch::IntegrationTest
     expected_response = {
       status: "ok",
       code: 200,
-      message: "Recover password email sended"
+      message: "Password recovery email sent"
     }
 
     post api_v1_forgot_passwords_path,

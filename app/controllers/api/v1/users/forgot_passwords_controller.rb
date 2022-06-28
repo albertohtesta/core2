@@ -6,18 +6,18 @@ module Api
       # Endpoint for forgot password
       class ForgotPasswordsController < ApplicationController
         def create
-          @recover_password_service = RecoverPasswordService.new(forgot_password_params)
+          @password_service = PasswordService.new(recover_password_params)
 
-          if @recover_password_service.forgot_password
-            render json: { status: :ok, code: 200, message: "Recover password email sended" }
+          if @password_service.recover_password
+            render json: { status: :ok, code: 200, message: "Password recovery email sent" }
           else
-            render json: { status: :bad_request, code: 400, message: @recover_password_service.error }
+            render json: { status: :bad_request, code: 400, message: @password_service.error }
           end
         end
 
         private
 
-        def forgot_password_params
+        def recover_password_params
           params.require(:credentials).permit(:username)
         end
       end

@@ -6,18 +6,18 @@ module Api
       # Endpoint for confirm code and recover password
       class RecoverPasswordsController < ApplicationController
         def create
-          @recover_password_service = RecoverPasswordService.new(recover_password_params)
+          @password_service = PasswordService.new(confirm_recover_password_params)
 
-          if @recover_password_service.recover_password
+          if @password_service.confirm_recover_password
             render json: { status: :ok, code: 200, message: "Password recovered" }
           else
-            render json: { status: :bad_request, code: 400, message: @recover_password_service.error }
+            render json: { status: :bad_request, code: 400, message: @password_service.error }
           end
         end
 
         private
 
-        def recover_password_params
+        def confirm_recover_password_params
           params.require(:credentials).permit(:username, :password, :confirmation_code)
         end
       end
