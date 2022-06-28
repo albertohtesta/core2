@@ -9,6 +9,7 @@ class SessionService < CognitoService
       resp = CLIENT.initiate_auth(auth_object)
     rescue StandardError => e
       @error = e
+      return false
     end
     resp
   end
