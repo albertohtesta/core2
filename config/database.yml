@@ -8,7 +8,7 @@ default: &default
 
 development:
   <<: *default
-  database: core_backend_development
+  database: <%= ENV["DB_NAME"] %>
 test:
   <<: *default
   database: core_backend_test
