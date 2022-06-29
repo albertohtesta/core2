@@ -4,8 +4,8 @@
 class CognitoService < ApplicationService
   CLIENT = Aws::CognitoIdentityProvider::Client.new(
     region: ENV.fetch("AWS_REGION", nil),
-    access_key_id: ENV.fetch("ACCESS_KEY_ID", nil),
-    secret_access_key: ENV.fetch("SECRET_ACCESS_KEY", nil),
+    access_key_id: ENV.fetch("COGNITO_ADMIN_ACCESS_KEY", nil),
+    secret_access_key: ENV.fetch("COGNITO_ADMIN_SECRET_KEY", nil),
     stub_responses: Rails.env.test?
   ).freeze
 
