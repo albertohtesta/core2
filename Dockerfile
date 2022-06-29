@@ -22,4 +22,4 @@ EXPOSE 80
 
 ENV PORT 80
 
-CMD bundle exec rails db:migrate && rails s -p 80 -b '0.0.0.0'
+CMD bundle exec rails s -p 80 -b '0.0.0.0'
