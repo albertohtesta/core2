@@ -172,7 +172,7 @@ services:
     depends_on:
       - redis
     volumes:
-      - .:/core
+      - .:/core-backend
     env_file:
       - .env.dev
       - .env.dev.local
