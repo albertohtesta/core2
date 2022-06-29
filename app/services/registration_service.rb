@@ -11,7 +11,7 @@ class RegistrationService < CognitoService
       add_user_to_table(resp)
     rescue StandardError => e
       @error = e
-      CLIENT.admin_delete_user(auth_object.except(:desired_delivery_mediums)) unless persisted?
+      delete_user
       return false
     end
     true
@@ -48,6 +48,12 @@ class RegistrationService < CognitoService
       username: @user_object[:email],
       group_name: @user_object[:group_name]
     }
+  end
+
+  def delete_user
+    return if persisted? || @user_object[:email].blank?
+
+    CLIENT.admin_delete_user(auth_object.except(:desired_delivery_mediums))
   end
 
   def persisted?
