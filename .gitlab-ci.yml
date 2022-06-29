@@ -3,6 +3,7 @@ image: registry.michelada.io/norden/core-backend:latest
 variables:
   RAILS_ENV: "test"
   POSTGRES_PASSWORD: postgres
+  DB_PASSWORD: postgres
   DB_USER: postgres
   DB_HOST: postgres
   RABBIT_HOST: rabbitmq
@@ -73,7 +74,6 @@ test:
     - bin/rails db:create
     - bin/rails db:test:prepare
     - bin/rails test
-
 
 publish-image-qa:
   stage: publish-image
