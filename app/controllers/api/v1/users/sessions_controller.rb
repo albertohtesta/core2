@@ -4,15 +4,15 @@ module Api
   module V1
     module Users
       # users invitation and creation
-      class SessionsController < ApplicationController
+      class SessionsController < ApiController
         def create
           session_service = SessionService.new(session_params)
           session = session_service.authenticate
           if session
-            render json: { data: session.authentication_result, status: :ok, code: 200 },
+            render json: { data: session.authentication_result },
                    status: :ok
           else
-            render json: { message: session_service.error, status: :bad_request, code: 400 }, status: :bad_request
+            render json: { errors: session_service.error }, status: :bad_request
           end
         end
 
