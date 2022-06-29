@@ -5,8 +5,11 @@ AllCops:
   NewCops: enable
   Exclude:
     - 'bin/**/*'
+    - 'vendor/**/*'
     - 'services/**/*'
     - 'documentation/**/*'
+    - 'core-frontend/**/*'
+    - 'db/schema.rb'
 
 Style/StringLiterals:
   Enabled: true
@@ -19,4 +22,3 @@ Style/StringLiteralsInInterpolation:
 Lint/MissingSuper:
   Exclude:
     - 'app/services/**/*'
-    - 'documentation/**/*'
