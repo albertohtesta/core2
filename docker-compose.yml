@@ -40,6 +40,9 @@ services:
     volumes:
       - ./core-frontend:/core-frontend
       - core_node_cache:/core-frontend/node_modules
+    env_file:
+      - .env.dev
+      - .env.dev.local
     environment:
       NODE_ENV: development
       PORT: 4000
@@ -83,6 +86,9 @@ services:
     volumes:
       - ./services/clients-frontend:/clients-frontend
       - clients_node_cache:/clients-frontend/node_modules
+    env_file:
+      - .env.dev
+      - .env.dev.local
     environment:
       NODE_ENV: development
       PORT: 4001
@@ -127,6 +133,9 @@ services:
     volumes:
       - ./services/collaborators-frontend:/collaborators-frontend
       - collaborators_node_cache:/collaborators-frontend/node_modules
+    env_file:
+      - .env.dev
+      - .env.dev.local
     environment:
       NODE_ENV: development
       PORT: 4002
