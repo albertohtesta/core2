@@ -5,8 +5,6 @@ require "test_helper"
 class RecoverPasswordsControllerTest < ActionDispatch::IntegrationTest
   test "should update a password for new user" do
     expected_response = {
-      status: "ok",
-      code: 200,
       message: "Password recovered"
     }
 
@@ -16,6 +14,8 @@ class RecoverPasswordsControllerTest < ActionDispatch::IntegrationTest
          as: :json
 
     response_body = JSON.parse(response.body)
+
+    assert_response :success
     assert_equal(response_body, expected_response.as_json)
   end
 end

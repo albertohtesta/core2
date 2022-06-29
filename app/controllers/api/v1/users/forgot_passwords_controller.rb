@@ -9,9 +9,9 @@ module Api
           @password_service = PasswordService.new(recover_password_params)
 
           if @password_service.recover_password
-            render json: { status: :ok, code: 200, message: "Password recovery email sent" }
+            render json: { message: "Password recovery email sent" }, status: :ok
           else
-            render json: { status: :bad_request, code: 400, message: @password_service.error }
+            render json: { message: @password_service.error }, status: :bad_request
           end
         end
 
