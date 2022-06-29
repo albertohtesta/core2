@@ -8,10 +8,10 @@ default: &default
 
 development:
   <<: *default
-  database: <%= ENV.fetch("DB_NAME") %>
+  database: core_backend_development
 test:
   <<: *default
-  database: <%= ENV.fetch("DB_NAME") %>
+  database: core_backend_test
 production:
   <<: *default
   database: core_backend_production
