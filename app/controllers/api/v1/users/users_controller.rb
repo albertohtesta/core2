@@ -3,15 +3,15 @@
 module Api
   module V1
     module Users
-      # Endpoint for update password for new user
-      class UsersController < ApplicationController
+      # Users endpoint
+      class UsersController < ApiController
         def index
-          @users = UserPresenter.paginate_collection(User.page(params[:page]).per(10))
+          @users = ::Users::UserPresenter.paginate_collection(User.page(params[:page]).per(10))
 
           if @users
             render json: @users
           else
-            render json: { status: :bad_request, code: 400, message: @users.error }
+            render json: { errors: @users.error }, status: :bad_request
           end
         end
       end
