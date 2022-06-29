@@ -24,14 +24,14 @@ class RegistrationService < CognitoService
   end
 
   def add_user_to_table(params)
-    User.new(
+    User.create!(
       {
         email: auth_object[:username],
         status: params.user.user_status,
         uid: params.user.username,
         role: group_object[:group_name]
       }
-    ).save
+    )
   end
 
   def auth_object
