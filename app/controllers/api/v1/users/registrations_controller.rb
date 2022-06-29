@@ -4,14 +4,14 @@ module Api
   module V1
     module Users
       # users invitation and creation
-      class RegistrationsController < ApplicationController
+      class RegistrationsController < ApiController
         def create
           @registration_service = RegistrationService.new(registration_params)
 
           if @registration_service.create_user
-            render json: { status: :ok, code: 200, message: "Invitation sent" }
+            render json: { message: "Invitation sent" }, status: :ok
           else
-            render json: { status: :bad_request, code: 400, message: @registration_service.error }
+            render json: { errors: @registration_service.error }, status: :bad_request
           end
         end
 
