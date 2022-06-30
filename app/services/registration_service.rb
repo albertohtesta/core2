@@ -33,7 +33,8 @@ class RegistrationService < CognitoService
     @auth_object ||= {
       user_pool_id: POOL_ID,
       username: @user_object[:email],
-      desired_delivery_mediums: ["EMAIL"]
+      desired_delivery_mediums: ["EMAIL"],
+      user_attributes: [{ name: "email", value: @user_object[:email] }, { name: "email_verified", value: "true" }]
     }
   end
 end
