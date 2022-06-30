@@ -9,10 +9,19 @@ module Api
           session_service = SessionService.new(session_params)
           session = session_service.authenticate
           if session
-            render json: { data: session.authentication_result },
-                   status: :ok
+            render json: { data: session.authentication_result }, status: :ok
           else
-            render json: { errors: session_service.error }, status: :bad_request
+            render json: { message: session_service.error }, status: :bad_request
+          end
+        end
+
+        def destroy
+          session_service = SessionService.new({ access_token: @access_token })
+
+          if session_service.sign_out
+            render json: { message: "Logout" }, status: :ok
+          else
+            render json: { message: session_service.error }, status: :bad_request
           end
         end
 
