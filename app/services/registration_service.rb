@@ -7,8 +7,8 @@ class RegistrationService < CognitoService
   def create_user
     begin
       resp = CLIENT.admin_create_user(auth_object)
-      add_user_to_group
       add_user_to_table(resp)
+      AddUserToAwsCognitoPoolGroupJob.perform_later(@user_object)
     rescue StandardError => e
       @error = e
       return false
@@ -18,19 +18,15 @@ class RegistrationService < CognitoService
 
   private
 
-  def add_user_to_group
-    CLIENT.admin_add_user_to_group(group_object)
-  end
-
   def add_user_to_table(params)
-    User.new(
+    User.create!(
       {
         email: auth_object[:username],
         status: params.user.user_status,
         uid: params.user.username,
-        role: group_object[:group_name]
+        role: @user_object[:group_name]
       }
-    ).save
+    )
   end
 
   def auth_object
@@ -38,14 +34,6 @@ class RegistrationService < CognitoService
       user_pool_id: POOL_ID,
       username: @user_object[:email],
       desired_delivery_mediums: ["EMAIL"]
-    }
-  end
-
-  def group_object
-    @group_object ||= {
-      user_pool_id: POOL_ID,
-      username: @user_object[:email],
-      group_name: @user_object[:group_name]
     }
   end
 end
