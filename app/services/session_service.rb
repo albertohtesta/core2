@@ -14,6 +14,16 @@ class SessionService < CognitoService
     resp
   end
 
+  def sign_out
+    begin
+      CLIENT.global_sign_out({ access_token: @user_object[:access_token] })
+    rescue StandardError => e
+      @error = e
+      return false
+    end
+    true
+  end
+
   private
 
   def auth_object
