@@ -11,7 +11,7 @@ module Api
           if session
             render json: { data: session.authentication_result }, status: :ok
           else
-            render json: { message: session_service.error }, status: :bad_request
+            render json: { errors: session_service.error }, status: :bad_request
           end
         end
 
@@ -21,7 +21,7 @@ module Api
           if session_service.sign_out
             render json: { message: "Logout" }, status: :ok
           else
-            render json: { message: session_service.error }, status: :bad_request
+            render json: { errors: session_service.error }, status: :bad_request
           end
         end
 
