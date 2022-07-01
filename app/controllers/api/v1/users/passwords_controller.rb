@@ -6,11 +6,9 @@ module Api
       # Endpoint for update password for new user
       class PasswordsController < ApiController
         def create
-          @aws_session ||= SessionService.new(session_params).authenticate
-          @challenge_service = ChallengeService.new(session_params.merge(session: @aws_session.session,
-                                                                         challenge_name: @aws_session.challenge_name))
+          @challenge_service = ChallengeService.new(session_params)
 
-          if @challenge_service.respond_to_auth_challenge
+          if @challenge_service.respond_to_change_password_challenge
             render json: { message: "Password updated" }, status: :ok
           else
             render json: { errors: @challenge_service.error }, status: :bad_request
