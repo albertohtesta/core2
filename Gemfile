@@ -25,6 +25,7 @@ gem "sneakers"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
+  gem "bundler-audit"
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "factory_bot_rails"
   gem "faker"
@@ -35,6 +36,7 @@ group :development do
   gem "rubocop"
   gem "rubocop-minitest"
   gem "rubocop-performance"
+  gem "rubocop-rails_config"
 end
 
 group :test do
