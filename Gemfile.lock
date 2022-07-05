@@ -89,6 +89,9 @@ GEM
       concurrent-ruby (~> 1.0, >= 1.0.5)
       redis (>= 1.0, <= 5.0)
     builder (3.2.4)
+    bundler-audit (0.9.1)
+      bundler (>= 1.2.0, < 3)
+      thor (~> 1.0)
     bunny (2.19.0)
       amq-protocol (~> 2.3, >= 2.3.1)
       sorted_set (~> 1, >= 1.0.2)
@@ -196,7 +199,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.2)
+    rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
     railties (7.0.3)
       actionpack (= 7.0.3)
@@ -226,9 +229,23 @@ GEM
       parser (>= 3.1.1.0)
     rubocop-minitest (0.20.0)
       rubocop (>= 0.90, < 2.0)
+    rubocop-packaging (0.5.1)
+      rubocop (>= 0.89, < 2.0)
     rubocop-performance (1.14.2)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
+    rubocop-rails (2.15.1)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.7.0, < 2.0)
+    rubocop-rails_config (1.10.2)
+      railties (>= 5.0)
+      rubocop (>= 1.29.0)
+      rubocop-ast (>= 1.0.1)
+      rubocop-minitest (~> 0.15)
+      rubocop-packaging (~> 0.5)
+      rubocop-performance (~> 1.11)
+      rubocop-rails (~> 2.0)
     ruby-progressbar (1.11.0)
     rufus-scheduler (3.8.1)
       fugit (~> 1.1, >= 1.1.6)
@@ -294,6 +311,7 @@ DEPENDENCIES
   aws-sdk-cognitoidentity
   aws-sdk-cognitoidentityprovider
   bootsnap
+  bundler-audit
   debug
   factory_bot_rails
   faker
@@ -309,6 +327,7 @@ DEPENDENCIES
   rubocop
   rubocop-minitest
   rubocop-performance
+  rubocop-rails_config
   sentry-rails
   sentry-ruby
   sidekiq

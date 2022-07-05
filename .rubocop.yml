@@ -1,15 +1,16 @@
 inherit_from: .rubocop_todo.yml
+inherit_gem:
+  rubocop-rails_config:
+    - config/rails.yml
+require:
+  - rubocop-performance
 
 AllCops:
   TargetRubyVersion: 3.1.1
   NewCops: enable
   Exclude:
-    - 'bin/**/*'
-    - 'vendor/**/*'
-    - 'services/**/*'
-    - 'documentation/**/*'
-    - 'core-frontend/**/*'
-    - 'db/schema.rb'
+    - services/**/*
+    - vendor/**/*
 
 Style/StringLiterals:
   Enabled: true
@@ -19,6 +20,8 @@ Style/StringLiteralsInInterpolation:
   Enabled: true
   EnforcedStyle: double_quotes
 
-Lint/MissingSuper:
-  Exclude:
-    - 'app/services/**/*'
+Layout/IndentationWidth:
+  Enabled: false
+
+Layout/EmptyLinesAroundAccessModifier:
+  Enabled: false
