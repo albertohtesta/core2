@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         resource :forgot_passwords, only: :create
         resource :recover_passwords, only: :create
         resource :sessions, only: %i[create destroy]
+        resource :roles, only: :update
         resources :users, only: :index
       end
     end
