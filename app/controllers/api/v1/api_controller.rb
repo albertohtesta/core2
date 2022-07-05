@@ -9,6 +9,10 @@ module Api
       def access_token
         @access_token ||= request.headers["Authorization"]
       end
+
+      def verify_token
+        TokenService.new({ token: @access_token }).verify
+      end
     end
   end
 end
