@@ -2,14 +2,16 @@
 
 # authenticate cognito user
 class TokenService < CognitoService
+  ISS = "https://cognito-idp.#{ENV.fetch("AWS_REGION", nil)}.amazonaws.com/#{CognitoService::POOL_ID}".freeze
+  URL = "https://cognito-idp.#{ENV.fetch("AWS_REGION",
+                                         nil)}.amazonaws.com/#{CognitoService::POOL_ID}/.well-known/jwks.json".freeze
+
   attr_reader :error
 
   def verify
     begin
-      iss = "https://cognito-idp.#{ENV.fetch("AWS_REGION", nil)}.amazonaws.com/#{CognitoService::POOL_ID}"
-      decoded_token = JWT.decode(@user_object[:token], nil, true,
-                                 { iss:, verify_iss: true, algorithms: ["RS256"], jwks: jwt_config })
-      puts decoded_token
+      JWT.decode(@user_object[:token], nil, true,
+                 { iss: ISS, verify_iss: true, algorithms: ["RS256"], jwks: jwt_config })
     rescue StandardError => e
       @error = e
       return false
@@ -20,9 +22,7 @@ class TokenService < CognitoService
   private
 
   def verification_uri
-    url = "https://cognito-idp.#{ENV.fetch("AWS_REGION",
-                                           nil)}.amazonaws.com/#{CognitoService::POOL_ID}/.well-known/jwks.json"
-    @verification_uri ||= URI(url)
+    @verification_uri ||= URI(URL)
   end
 
   def jwt_config
