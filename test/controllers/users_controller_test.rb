@@ -9,7 +9,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "must return users json" do
     expected_response = {
-      collection: [{ name: user.name, email: user.email, role: user.role }],
+      collection: [{ name: user.name, email: user.email, role: user.role, is_enabled: true }],
       pagination: {
         current_page: 1,
         next_page: nil,
