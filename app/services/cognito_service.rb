@@ -10,7 +10,7 @@ class CognitoService < ApplicationService
   ).freeze
 
   CLIENT_ID = ENV.fetch("AWS_COGNITO_USER_POOL_CLIENT_ID", nil).freeze
-  POOL_ID = ENV.fetch("AWS_COGNITO_USER_POOL", nil).freeze
+  POOL_ID = ENV.fetch("AWS_COGNITO_USER_POOL", "local").freeze
 
   def initialize(user_object)
     @user_object = user_object
