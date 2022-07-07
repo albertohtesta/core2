@@ -11,7 +11,7 @@ module Api
       end
 
       def verify_token
-        valid_token = TokenService.new({ token: access_token }).verify
+        valid_token = TokenService.new({ token: access_token }).decode
         render json: { message: "Invalid token" }, status: :unauthorized unless valid_token
       end
     end

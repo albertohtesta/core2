@@ -8,15 +8,15 @@ class TokenService < CognitoService
 
   attr_reader :error
 
-  def verify
+  def decode
     begin
-      JWT.decode(@user_object[:token], nil, true,
-                 { iss: ISS, verify_iss: true, algorithms: ["RS256"], jwks: jwt_config })
+      decoded_token = JWT.decode(@user_object[:token], nil, true,
+                                 { iss: ISS, verify_iss: !Rails.env.test?, algorithms: ["RS256"], jwks: jwt_config })
     rescue StandardError => e
       @error = e
       return false
     end
-    true
+    decoded_token
   end
 
   private
