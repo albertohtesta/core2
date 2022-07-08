@@ -110,14 +110,11 @@ services:
       - ./services/collaborators-backend:/collaborators-backend
       - collaborators_gem_cache:/collaborators-backend/vendor/bundle
     env_file:
-      - .env.dev
-      - .env.dev.local
+      - ./services/collaborators-backend/.env.dev
     tty: true
     stdin_open: true
     environment:
       RAILS_ENV: development
-      DB_HOST: pg
-      DATABASE_NAME: collaborators_backend
       BUNDLE_PATH: /collaborators-backend/vendor/bundle
       PORT: 3002
 
@@ -133,9 +130,6 @@ services:
     volumes:
       - ./services/collaborators-frontend:/collaborators-frontend
       - collaborators_node_cache:/collaborators-frontend/node_modules
-    env_file:
-      - .env.dev
-      - .env.dev.local
     environment:
       NODE_ENV: development
       PORT: 4002
