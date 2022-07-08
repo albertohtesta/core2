@@ -5,6 +5,8 @@ module Api
     module Users
       # users invitation and creation
       class RegistrationsController < ApiController
+        skip_before_action :verify_token
+
         def create
           @registration_service = RegistrationService.new(registration_params)
 

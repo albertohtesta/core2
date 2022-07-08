@@ -10,6 +10,7 @@ gem "aws-sdk-cognitoidentityprovider"
 gem "bootsnap", require: false
 gem "jbuilder"
 gem "json"
+gem "jwt"
 gem "kaminari"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
@@ -41,4 +42,5 @@ end
 
 group :test do
   gem "simplecov"
+  gem "webmock"
 end

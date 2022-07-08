@@ -5,6 +5,8 @@ module Api
     module Users
       # users invitation and creation
       class SessionsController < ApiController
+        skip_before_action :verify_token, only: :create
+
         def create
           session_service = SessionService.new(session_params)
           session = session_service.authenticate

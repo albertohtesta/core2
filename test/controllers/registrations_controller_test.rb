@@ -3,6 +3,10 @@
 require "test_helper"
 
 class RegistrationsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    stub_cognito_uri
+  end
+
   test "should invite and create user" do
     expected_response = {
       message: "Invitation sent"

@@ -3,6 +3,10 @@
 require "test_helper"
 
 class ForgotPasswordsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    stub_cognito_uri
+  end
+
   test "should send code for forgot password" do
     expected_response = {
       message: "Password recovery email sent"
