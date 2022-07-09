@@ -10,6 +10,11 @@ Rails.application.configure do
   config.hosts << "qa-core-api.nordhen.com"
   config.hosts << "qa-core.nordhen.com"
 
+  # Exclude requests for the /build-info path from host checking
+  Rails.application.config.host_authorization = {
+    exclude: ->(request) { request.path =~ /build-info/ }
+  }
+
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
