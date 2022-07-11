@@ -31,8 +31,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "must disable user" do
     expected_response = { message: "User was disabled" }
-    patch api_v1_user_path(user), params: { user: { email: user.email, is_enabled: false } },
-         as: :json
+    patch api_v1_user_path(user),
+          params: { user: { email: user.email, is_enabled: false } },
+          headers: { "Authorization" => @token },
+          as: :json
     response_body = JSON.parse(response.body)
 
     assert_response :success
@@ -43,8 +45,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "must enable user" do
     expected_response = { message: "User was enabled" }
     user = create(:user, is_enabled: false)
-    patch api_v1_user_path(user), params: { user: { email: user.email, is_enabled: true } },
-         as: :json
+    patch api_v1_user_path(user),
+          params: { user: { email: user.email, is_enabled: true } },
+          headers: { "Authorization" => @token },
+          as: :json
     response_body = JSON.parse(response.body)
 
     assert_response :success

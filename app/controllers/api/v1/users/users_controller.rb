@@ -5,8 +5,6 @@ module Api
     module Users
       # Users endpoint
       class UsersController < ApiController
-        skip_before_action :verify_token
-
         def index
           @users = ::Users::UserPresenter.paginate_collection(User.page(params[:page]).per(10))
 
