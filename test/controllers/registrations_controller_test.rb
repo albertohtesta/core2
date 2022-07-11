@@ -3,12 +3,17 @@
 require "test_helper"
 
 class RegistrationsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    stub_cognito_uri
+  end
+
   test "should invite and create user" do
     expected_response = {
       message: "Invitation sent"
     }
-    post api_v1_registrations_path, params: { email: "test@test.com", name: "test", group_name: "testing_assignment" },
-                                    as: :json
+    post api_v1_registrations_path,
+          params: { email: "test@test.com", name: "test", group_name: "testing_assignment" },
+          headers: { "Authorization" => @token }, as: :json
 
     response_body = JSON.parse(response.body)
     assert_response :success
