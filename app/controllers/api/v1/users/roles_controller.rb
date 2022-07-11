@@ -5,6 +5,8 @@ module Api
     module Users
       # Update roles endpoint
       class RolesController < ApiController
+        skip_before_action :verify_token
+
         def update
           role_service = RoleService.new(user_params)
 
