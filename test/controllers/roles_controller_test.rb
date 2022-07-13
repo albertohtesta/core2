@@ -7,12 +7,16 @@ class RolesControllerTest < ActionDispatch::IntegrationTest
     @user ||= create(:user)
   end
 
+  setup do
+    stub_cognito_uri
+  end
+
   test "should update a role" do
     expected_response = {
       message: "Role updated"
     }
     patch api_v1_roles_path, params: { role: { email: user.email, group_name: "collaborator" } },
-                             as: :json
+                             headers: { "Authorization" => @token }, as: :json
 
     response_body = JSON.parse(response.body)
     assert_response :success
