@@ -20,8 +20,8 @@ module Users
       expected_response = {
         name: user.name,
         email: user.email,
-        role: "admin",
-        is_enabled: true
+        is_enabled: true,
+        role: "admin"
       }.to_json
 
       assert_equal expected_response, decorate_user.json

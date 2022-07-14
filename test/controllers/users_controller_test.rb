@@ -3,13 +3,17 @@
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    stub_cognito_uri
+  end
+
   def user
     @user ||= create(:user)
   end
 
   test "must return users json" do
     expected_response = {
-      collection: [{ name: user.name, email: user.email, role: user.role, is_enabled: true }],
+      collection: [{ name: user.name, email: user.email, is_enabled: true, role: user.role }],
       pagination: {
         current_page: 1,
         next_page: nil,
@@ -19,7 +23,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    get api_v1_users_path
+    get api_v1_users_path, headers: { "Authorization" => @token }
 
     response_body = JSON.parse(response.body)
     assert_equal(response_body, expected_response.as_json)

@@ -225,7 +225,7 @@ deploy-production:
     - sed -i "s@#COMPLETE_ROUTE#@$COMPLETE_ROUTE@" input.json
     - echo $(cat input.json | jq '.taskDefinition') > input.json
     - echo $(cat input.json | jq  'del(.taskDefinitionArn)' | jq 'del(.revision)' | jq 'del(.status)' | jq 'del(.requiresAttributes)' | jq 'del(.compatibilities) | del(.registeredAt) | del(.registeredBy)') > input.json
-    - aws ecs register-task-definition --cli-input-json file://input.json --region $AWS_DEFAULT_REGION 
+    - aws ecs register-task-definition --cli-input-json file://input.json --region $AWS_DEFAULT_REGION
     - revision=$(aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-production --region $AWS_DEFAULT_REGION | egrep "revision" | tr "/" " " | awk '{print $2}' | sed 's/"$//' | cut -d "," -f 1)
     - aws ecs update-service --cluster $PREFIX-production --service $PREFIX-$CI_PROJECT_NAME-production  --task-definition $PREFIX-$CI_PROJECT_NAME-production:$revision --region $AWS_DEFAULT_REGION
   only:
