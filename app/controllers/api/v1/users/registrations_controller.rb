@@ -9,9 +9,9 @@ module Api
           @registration_service = RegistrationService.new(registration_params)
 
           if @registration_service.create_user
-            render json: { message: "Invitation sent" }, status: :ok
+            render json: { message: "Invitation sent successfully" }, status: :ok
           else
-            render json: { errors: @registration_service.error }, status: :bad_request
+            render json: { errors: @registration_service, message: @registration_service.error }, status: :bad_request
           end
         end
 

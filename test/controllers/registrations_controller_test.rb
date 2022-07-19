@@ -9,7 +9,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should invite and create user" do
     expected_response = {
-      message: "Invitation sent"
+      message: "Invitation sent successfully"
     }
     post api_v1_registrations_path,
           params: { email: "test@test.com", name: "test", group_name: "testing_assignment" },
