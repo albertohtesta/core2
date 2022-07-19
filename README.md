@@ -3,7 +3,7 @@
 ## System dependencies
 * Docker (If you are on macOS use the desktop version 😁)
 * Ruby 3.1.1
-* Rails 7.0.2
+* Rails 7.0.3.1
 
 ## Configuration
 Please follow the steps below in the order they are presented.
