@@ -20,6 +20,7 @@ module Users
       expected_response = {
         name: user.name,
         email: user.email,
+        is_enabled: true,
         role: "admin"
       }.to_json
 

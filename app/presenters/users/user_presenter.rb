@@ -3,7 +3,7 @@
 module Users
   # presenter for user model
   class UserPresenter < ApplicationPresenter
-    ATTRS = %i[email name role].freeze
+    ATTRS = %i[email name role is_enabled].freeze
 
     def self.paginate_collection(object)
       {
