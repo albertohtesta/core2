@@ -6,6 +6,7 @@ class RegistrationService < CognitoService
 
   def create_user
     begin
+      user.save!
       resp = CLIENT.admin_create_user(auth_object)
       add_user_to_table(resp)
       AddUserToAwsCognitoPoolGroupJob.perform_later(@user_object)
@@ -18,11 +19,16 @@ class RegistrationService < CognitoService
 
   private
 
+  def user
+    @user ||= User.new({
+      email: auth_object[:username],
+      role: @user_object[:group_name]
+    })
+  end
+
   def add_user_to_table(params)
-    User.create!(
+    user.update!(
       {
-        email: auth_object[:username],
-        status: params.user.user_status,
         uid: params.user.username,
         role: @user_object[:group_name]
       }

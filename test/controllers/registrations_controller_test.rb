@@ -12,7 +12,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
       message: "Invitation sent successfully"
     }
     post api_v1_registrations_path,
-          params: { email: "test@test.com", name: "test", group_name: "testing_assignment" },
+          params: { email: "test@test.com", name: "test", group_name: "collaborator" },
           headers: { "Authorization" => @token }, as: :json
 
     response_body = JSON.parse(response.body)
