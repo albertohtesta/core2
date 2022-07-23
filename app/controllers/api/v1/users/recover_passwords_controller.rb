@@ -5,7 +5,7 @@ module Api
     module Users
       # Endpoint for confirm code and recover password
       class RecoverPasswordsController < ApiController
-        skip_before_action :verify_token
+        skip_before_action :verify_token, :current_user
 
         def create
           @password_service = PasswordService.new(confirm_recover_password_params)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# enabled or disabled user
+# Service to manage users status, roles, etc
 class UserService < CognitoService
   attr_reader :error
 
@@ -26,10 +26,22 @@ class UserService < CognitoService
     true
   end
 
+  def logged_user_email
+    logged_user[:user_attributes].find { |x| x[:name] == "email" }[:value]
+  end
+
   private
 
   def user
     @user ||= User.find_by(email: @user_object[:email])
+  end
+
+  def logged_user
+    stub_get_user if Rails.env.test?
+    CLIENT.get_user(access_token: @user_object[:token]).to_h
+  rescue StandardError => e
+    @error = e
+    false
   end
 
   def update_user(*args)

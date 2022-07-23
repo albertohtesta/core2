@@ -3,12 +3,12 @@
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    stub_cognito_uri
-  end
-
   def user
     @user ||= create(:user)
+  end
+
+  setup do
+    login_as(user)
   end
 
   test "must return users json" do

@@ -4,7 +4,7 @@ module Api
   module V1
     module Users
       # users invitation and creation
-      class RegistrationsController < ApiController
+      class RegistrationsController < ApiAdminController
         def create
           @registration_service = RegistrationService.new(registration_params)
 
