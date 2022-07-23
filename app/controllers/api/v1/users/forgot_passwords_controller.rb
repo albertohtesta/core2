@@ -5,7 +5,7 @@ module Api
     module Users
       # Endpoint for forgot password
       class ForgotPasswordsController < ApiController
-        skip_before_action :verify_token
+        skip_before_action :verify_token, :current_user
 
         def create
           @password_service = PasswordService.new(recover_password_params)

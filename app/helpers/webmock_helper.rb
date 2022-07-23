@@ -2,9 +2,15 @@
 
 # Mock cognito uri response
 module WebmockHelper
-  def stub_cognito_uri
+  def login_as(user)
     jwk = JWT::JWK.new(OpenSSL::PKey::RSA.new(2048), "optional-kid")
-    payload = { data: "data" }
+    payload = { username: user.uid,
+                user_attributes: [
+                                  { name: "sub", value: user.uid },
+                                  { name: "email_verified", value: "true" },
+                                  { name: "email", value: user.email }
+                                ]
+              }
     headers = { kid: jwk.kid }
 
     keys_body = { keys: [jwk.export] }.to_json

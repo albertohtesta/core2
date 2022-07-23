@@ -6,6 +6,7 @@ FactoryBot.define do
     email { Faker::Internet.email }
     role { "admin" }
     status { "CURRENT_STATUS" }
+    is_enabled { true }
     uid { Faker::Internet.uuid }
   end
 end

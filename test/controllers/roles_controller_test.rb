@@ -8,7 +8,7 @@ class RolesControllerTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    stub_cognito_uri
+    login_as(user)
   end
 
   test "should update a role" do

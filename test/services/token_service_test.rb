@@ -4,7 +4,8 @@ require "test_helper"
 
 class TokenServiceTest < ActiveSupport::TestCase
   setup do
-    stub_cognito_uri
+    user = create(:user)
+    login_as(user)
   end
 
   test "should decode valid token" do

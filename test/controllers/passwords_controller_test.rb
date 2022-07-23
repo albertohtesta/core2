@@ -4,7 +4,8 @@ require "test_helper"
 
 class PasswordsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    stub_cognito_uri
+    user = create(:user)
+    login_as(user)
   end
 
   test "should update a password for new user" do
