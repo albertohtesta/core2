@@ -4,7 +4,8 @@ require "test_helper"
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    stub_cognito_uri
+    user = create(:user)
+    login_as(user)
   end
 
   test "should user login and receive token" do

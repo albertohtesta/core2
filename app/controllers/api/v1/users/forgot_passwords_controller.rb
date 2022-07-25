@@ -5,12 +5,12 @@ module Api
     module Users
       # Endpoint for forgot password
       class ForgotPasswordsController < ApiController
-        skip_before_action :verify_token
+        skip_before_action :verify_token, :current_user
 
         def create
           @password_service = PasswordService.new(recover_password_params)
 
-          if @password_service.recover_password || @password_service.error.class == Aws::CognitoIdentityProvider::Errors::UserNotFoundException
+          if @password_service.recover_password || (@password_service.error.class == Aws::CognitoIdentityProvider::Errors::UserNotFoundException)
             render json: { message: "Password recovery email sent" }, status: :ok
           else
             render json: { message: @password_service.error }, status: :bad_request

@@ -3,17 +3,17 @@
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    stub_cognito_uri
-  end
-
   def user
     @user ||= create(:user)
   end
 
+  setup do
+    login_as(user)
+  end
+
   test "must return users json" do
     expected_response = {
-      collection: [{ name: user.name, email: user.email, is_enabled: true, role: user.role }],
+      collection: [{ name: user.name, email: user.email, role: user.role, is_enabled: true }],
       pagination: {
         current_page: 1,
         next_page: nil,

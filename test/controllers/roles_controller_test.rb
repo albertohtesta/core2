@@ -3,12 +3,12 @@
 require "test_helper"
 
 class RolesControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    stub_cognito_uri
-  end
-
   def user
     @user ||= create(:user)
+  end
+
+  setup do
+    login_as(user)
   end
 
   test "should update a role" do

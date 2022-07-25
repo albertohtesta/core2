@@ -5,7 +5,7 @@ module Api
     module Users
       # Endpoint for update password for new user
       class PasswordsController < ApiController
-        skip_before_action :verify_token, only: :create
+        skip_before_action :verify_token, :current_user, only: :create
 
         def create
           @challenge_service = ChallengeService.new(session_params)
