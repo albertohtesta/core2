@@ -4,11 +4,20 @@ info:
   title: Core API V1
   version: v1
 paths:
-  "/api/v1/users":
-    post:
+  "/api/v1/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: integer
+    put:
       summary: Updates a user
       tags:
       - Users
+      security:
+      - Bearer: []
       parameters: []
       responses:
         '200':
@@ -19,15 +28,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                is_enabled:
-                  type: boolean
-              required:
-              - email
-              - is_enabled
+              "$ref": "#/components/schemas/user"
   "/build-info":
     get:
       summary: gets the build info
@@ -36,10 +37,20 @@ paths:
       responses:
         '200':
           description: info received
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/info"
 servers:
 - url: https://qa-core-api.nordhen.com
 - url: http://localhost:3000
 components:
+  securitySchemes:
+    Bearer:
+      description: JWT key necessary to use API calls
+      type: apiKey
+      name: Authorization
+      in: header
   schemas:
     info:
       type: object
@@ -54,3 +65,16 @@ components:
       - build_id
       - build_date
       - build_branch
+    user:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            email:
+              type: string
+            is_enabled:
+              type: boolean
+          required:
+          - email
+          - is_enabled

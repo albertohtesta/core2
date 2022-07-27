@@ -76,9 +76,10 @@ test:
     COVERAGE: 1
   script:
     - bundle install
-    - bin/rails db:create
-    - bin/rails db:test:prepare
-    - bin/rails test
+    - bundle exec rails db:create
+    - bundle exec rails db:test:prepare
+    - bundle exec rspec
+    - bundle exec rails test
 
 
 publish-image-qa:

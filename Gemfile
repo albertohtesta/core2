@@ -35,6 +35,7 @@ group :development, :test do
   gem "minitest"
   gem "rspec-rails", "~> 6.0.0.rc1"
   gem "rswag-specs"
+  gem "byebug"
 end
 
 group :development do
