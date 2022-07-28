@@ -7,8 +7,12 @@ describe "Users", type: :request do
 
   path "/api/v1/users/{id}" do
     let(:user) { create(:user) }
-    let(:Authorization) { stub_cognito_uri }
+    let(:Authorization) { @token }
     let(:id) { user.id }
+
+    before do
+      login_as(user)
+    end
 
     parameter name: :id, in: :path, type: :integer, description: "id"
 
