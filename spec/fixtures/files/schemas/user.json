@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "user": {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "is_enabled": { "type": "boolean" }
+      },
+      "required": [ "email", "is_enabled" ]
+    }
+  }
+}
