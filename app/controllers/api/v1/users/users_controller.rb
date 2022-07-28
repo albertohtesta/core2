@@ -23,7 +23,7 @@ module Api
           if update_user
             render json: { message: user_params[:is_enabled] ? "User was enabled" : "User was disabled" }, status: :ok
           else
-            render json: { errors: user_service.error }, status: :bad_request
+            render json: { errors: user_service.error }, status: :unprocessable_entity
           end
         end
 
