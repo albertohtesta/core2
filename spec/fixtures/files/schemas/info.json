@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "build_id": { "type": "string" },
+    "build_date": { "type": "string" },
+    "build_branch": { "type": "string" }
+
+  },
+  "required": ["build_id", "build_date", "build_branch" ]
+}

@@ -17,6 +17,8 @@ gem "puma", "~> 5.0"
 gem "rack-cors"
 gem "rails", "~> 7.0.2", ">= 7.0.3.1"
 gem "redis"
+gem "rswag"
+gem "rswag-ui"
 gem "sentry-rails"
 gem "sentry-ruby"
 gem "sidekiq"
@@ -31,6 +33,9 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "minitest"
+  gem "rspec-rails", "~> 6.0.0.rc1"
+  gem "rswag-specs"
+  gem "byebug"
 end
 
 group :development do

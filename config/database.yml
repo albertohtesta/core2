@@ -8,10 +8,10 @@ default: &default
 
 development:
   <<: *default
-  database: <%= ENV.fetch("DB_NAME") { "core_development" } %>
+  database: core_backend_development
 test:
   <<: *default
-  database: <%= ENV.fetch("DB_NAME") { "core_testing" } %>
+  database: core_backend_test
 qa:
   <<: *default
   database: <%= ENV.fetch("DB_NAME") { "core" } %>
