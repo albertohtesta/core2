@@ -164,6 +164,11 @@ deploy-qa:
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"#NAME_SECRET_KEY_VALUE#","value":"#SECRET_KEY_VALUE#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"RAILS_ENV","value":"qa"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"PORT","value":"80"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_URL","value":"amqps://llamfzik:eA-1Qa4U6qJGr9mHuuHQnGA00iz3shvI@gull.rmq.cloudamqp.com/llamfzik"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_HOST","value":"gull-01.rmq.cloudamqp.com"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_VHOST","value":"llamfzik"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_USERNAME","value":"llamfzik"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_PASSWORD","value":"eA-1Qa4U6qJGr9mHuuHQnGA00iz3shvI"}]') >  input.json
     - sed -i "s@#NAME_SECRET_KEY_VALUE#@SECRET_KEY_BASE@" input.json
     - sed -i "s@#SECRET_KEY_VALUE#@$RAILS_QA_SECRET_KEY_BASE@" input.json
     - sed -i "s@#COMPLETE_ROUTE#@$COMPLETE_ROUTE@" input.json
@@ -193,6 +198,11 @@ deploy-staging:
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"#NAME_SECRET_KEY_VALUE#","value":"#SECRET_KEY_VALUE#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"RAILS_ENV","value":"staging"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"PORT","value":"80"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_URL","value":"amqps://wirfzcpt:L6FNqZTsqXPsNArTraTmYXAHEF0v_mGh@gull.rmq.cloudamqp.com/wirfzcpt"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_HOST","value":"gull-01.rmq.cloudamqp.com"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_VHOST","value":"wirfzcpt"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_USERNAME","value":"wirfzcpt"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_PASSWORD","value":"L6FNqZTsqXPsNArTraTmYXAHEF0v_mGh"}]') >  input.json
     - sed -i "s@#NAME_SECRET_KEY_VALUE#@SECRET_KEY_BASE@" input.json
     - sed -i "s@#SECRET_KEY_VALUE#@$RAILS_QA_SECRET_KEY_BASE@" input.json
     - sed -i "s@#COMPLETE_ROUTE#@$COMPLETE_ROUTE@" input.json
@@ -221,6 +231,11 @@ deploy-production:
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"#NAME_SECRET_KEY_VALUE#","value":"#SECRET_KEY_VALUE#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"RAILS_ENV","value":"production"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"PORT","value":"80"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_URL","value":"amqps://wirfzcpt:L6FNqZTsqXPsNArTraTmYXAHEF0v_mGh@gull.rmq.cloudamqp.com/wirfzcpt"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_HOST","value":"gull-01.rmq.cloudamqp.com"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_VHOST","value":"wirfzcpt"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_USERNAME","value":"wirfzcpt"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_PASSWORD","value":"L6FNqZTsqXPsNArTraTmYXAHEF0v_mGh"}]') >  input.json
     - sed -i "s@#NAME_SECRET_KEY_VALUE#@SECRET_KEY_BASE@" input.json
     - sed -i "s@#SECRET_KEY_VALUE#@$RAILS_QA_SECRET_KEY_BASE@" input.json
     - sed -i "s@#COMPLETE_ROUTE#@$COMPLETE_ROUTE@" input.json
