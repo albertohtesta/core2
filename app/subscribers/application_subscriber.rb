@@ -1,4 +1,6 @@
-require 'sneakers'
+# frozen_string_literal: true
+
+require "sneakers"
 
 # Base class for subscribers
 class ApplicationSubscriber
@@ -7,7 +9,7 @@ class ApplicationSubscriber
 
   ATTRS = {}.freeze
 
-  def perform(payload)
+  def work(payload)
     @payload = safe_json(payload)
     process
   end
@@ -15,7 +17,7 @@ class ApplicationSubscriber
   protected
 
   def permitted_attributes
-    self.class::ATTRS.keys.each_with_object({}) do |key, memo|
+    @permitted_attributes ||= self.class::ATTRS.keys.each_with_object({}) do |key, memo|
       memo[key] = attribute(key)
       memo
     end
