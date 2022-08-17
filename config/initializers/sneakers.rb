@@ -7,5 +7,6 @@ Sneakers.configure(
   amqp: "amqp://guest:guest@#{rabbit_host}:#{rabbit_port}",
   vhost: "/",
   exchange: "sneakers",
-  exchange_type: :direct
+  exchange_type: :direct,
+  durable: true
 )

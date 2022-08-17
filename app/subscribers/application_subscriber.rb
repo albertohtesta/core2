@@ -1,7 +1,7 @@
-# frozen_string_literal: true
+require 'sneakers'
 
 # Base class for subscribers
-class ApplicationSubscriber < ApplicationJob
+class ApplicationSubscriber
   include Sneakers::Worker
   from_queue :default
 

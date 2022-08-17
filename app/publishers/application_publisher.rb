@@ -25,7 +25,7 @@ class ApplicationPublisher
   protected
 
   def exchange
-    @exchange ||= channel.direct("amq.direct")
+    @exchange ||= channel.direct("sneakers", durable: true)
   end
 
   def channel

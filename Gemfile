@@ -8,6 +8,8 @@ ruby "3.1.1"
 gem "aws-sdk-cognitoidentity"
 gem "aws-sdk-cognitoidentityprovider"
 gem "bootsnap", require: false
+gem "bunny"
+gem "bunny-mock"
 gem "jbuilder"
 gem "json"
 gem "jwt"
