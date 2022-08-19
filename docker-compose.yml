@@ -9,6 +9,7 @@ services:
     command: sh
     depends_on:
       - pg
+      - rabbitmq
     ports:
       - "3000:3000"
     volumes:
