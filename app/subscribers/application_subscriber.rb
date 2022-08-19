@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
+require "sneakers"
+
 # Base class for subscribers
-class ApplicationSubscriber < ApplicationJob
+class ApplicationSubscriber
   include Sneakers::Worker
   from_queue :default
 
   ATTRS = {}.freeze
 
-  def perform(payload)
+  def work(payload)
     @payload = safe_json(payload)
     process
   end
@@ -15,7 +17,7 @@ class ApplicationSubscriber < ApplicationJob
   protected
 
   def permitted_attributes
-    self.class::ATTRS.keys.each_with_object({}) do |key, memo|
+    @permitted_attributes ||= self.class::ATTRS.keys.each_with_object({}) do |key, memo|
       memo[key] = attribute(key)
       memo
     end

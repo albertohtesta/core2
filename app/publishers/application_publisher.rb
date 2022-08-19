@@ -25,7 +25,10 @@ class ApplicationPublisher
   protected
 
   def exchange
-    @exchange ||= channel.direct("amq.direct")
+    @exchange ||= channel.direct(
+      ENV.fetch("RABBITMQ_EXCHANGE", "norden"),
+      durable: true
+    )
   end
 
   def channel
