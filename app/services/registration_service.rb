@@ -27,7 +27,7 @@ class RegistrationService < CognitoService
   def user
     @user ||= User.new({
       email: auth_object[:username],
-      role: @user_object[:group_name]
+      roles: @user_object[:groups_names]
     })
   end
 
@@ -35,7 +35,7 @@ class RegistrationService < CognitoService
     user.update!(
       {
         uid: params.user.username,
-        role: @user_object[:group_name]
+        roles: @user_object[:groups_names]
       }
     )
   end

@@ -2,9 +2,9 @@
 
 module Api
   module V1
-    module Users
+    module Admins
       # Users endpoint
-      class UsersController < ApiController
+      class UsersController < ApiAdminController
         def index
           @users = ::Users::UserPresenter.paginate_collection(UserRepository.ordered_by_email.page(params[:page]).per(10))
 

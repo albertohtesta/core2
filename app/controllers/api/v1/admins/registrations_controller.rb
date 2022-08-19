@@ -2,11 +2,11 @@
 
 module Api
   module V1
-    module Users
+    module Admins
       # users invitation and creation
       class RegistrationsController < ApiAdminController
         def create
-          @registration_service = RegistrationService.new(registration_params)
+          @registration_service = ::RegistrationService.new(registration_params)
 
           if @registration_service.create_user
             render json: { message: "Invitation sent successfully" }, status: :ok
@@ -18,7 +18,7 @@ module Api
         private
 
         def registration_params
-          params.require(:registration).permit(:email, :group_name)
+          params.require(:registration).permit(:email, groups_names: [])
         end
       end
     end

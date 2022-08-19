@@ -11,6 +11,7 @@ AllCops:
   Exclude:
     - services/**/*
     - vendor/**/*
+    - db/**/*
 
 Style/StringLiterals:
   Enabled: true

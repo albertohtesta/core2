@@ -23,15 +23,19 @@ class RoleService < CognitoService
   end
 
   def remove_user_from_group
-    CLIENT.admin_remove_user_from_group(update_user_object.merge(group_name: user.role))
+    user.roles.each do |role|
+      CLIENT.admin_remove_user_from_group(update_user_object.merge(group_name: role))
+    end
   end
 
   def add_user_to_group
-    CLIENT.admin_add_user_to_group(update_user_object.merge(group_name: @user_object[:group_name]))
+    @user_object[:groups_names].each do |role|
+      CLIENT.admin_add_user_to_group(update_user_object.merge(group_name: role))
+    end
   end
 
   def update_db_role
-    user.update(role: @user_object[:group_name])
+    user.update(roles: @user_object[:groups_names])
   end
 
   def update_user_object

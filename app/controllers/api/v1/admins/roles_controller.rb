@@ -2,9 +2,9 @@
 
 module Api
   module V1
-    module Users
+    module Admins
       # Update roles endpoint
-      class RolesController < ApiController
+      class RolesController < ApiAdminController
         def update
           role_service = RoleService.new(user_params)
 
@@ -18,7 +18,7 @@ module Api
         private
 
         def user_params
-          params.require(:role).permit(:email, :group_name)
+          params.require(:role).permit(:email, groups_names: [])
         end
       end
     end

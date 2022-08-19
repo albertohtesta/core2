@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :user do
     name { Faker::Name.name }
     email { Faker::Internet.email }
-    role { "admin" }
+    roles { ["admin"] }
     status { "CURRENT_STATUS" }
     is_enabled { true }
     uid { Faker::Internet.uuid }
