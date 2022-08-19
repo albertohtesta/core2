@@ -41,28 +41,19 @@ overcommit --install
 ### Load the containers
 Since Docker loads all the dependencies as containers, all you have to do is clone the repo and run 
 ```console
-docker-compose run core-backend sh -c "./bin/setup"
-```
-and then:
-```console
 docker-compose up core-backend
 ```
 That will fetch you rails, redis, postgres, rabbitMQ, sidekiq, download and install the needed gems, setup the DB and prepare the ground for the backend and frontend projects.
 
 ### Set the data up
-**_This step is only necessary if you could not create the DB with the first command from the section above._**
 
 **While the container is running**, in another console prompt, run 
 ```console
 docker-compose exec core-backend sh
 ```
-to bring up the **core-backend** container shell. Inside the shell, create the development and testing databases with 
+to bring up the **core-backend** container shell. Inside the shell, create the development and testing databases and run the migrations with 
 ```console
-bin/rails db:create
-```
-and then run the migrations with 
-```console
-bin/rails db:migrate
+bin/rails db:setup
 ```
 Leave the shell with `exit`.
 
