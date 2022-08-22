@@ -11,6 +11,8 @@ Rails.application.configure do
   config.hosts << "qa-core.nordhen.com"
   config.hosts << "staging-core-api.nordhen.com"
   config.hosts << "staging-core.nordhen.com"
+  config.hosts << "core-api.nordhen.com"
+  config.hosts << "core.nordhen.com"
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
