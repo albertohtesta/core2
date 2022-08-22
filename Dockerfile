@@ -18,8 +18,10 @@ RUN bundle install
 
 COPY . ./
 
-EXPOSE 80
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
 
-ENV PORT 80
+EXPOSE 80
 
 CMD bundle exec rails s -p 80 -b '0.0.0.0'

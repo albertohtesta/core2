@@ -7,10 +7,13 @@ Rails.application.configure do
 
   # Code is not reloaded between requests.
   config.cache_classes = true
-  config.hosts << "qa-core-api.nordhen.com"
-  config.hosts << "qa-core.nordhen.com"
   config.hosts << "staging-core-api.nordhen.com"
   config.hosts << "staging-core.nordhen.com"
+
+  # Exclude requests for the /build-info path from host checking
+  Rails.application.config.host_authorization = {
+    exclude: ->(request) { request.path =~ /build-info/ }
+  }
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -82,7 +85,7 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger           = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end

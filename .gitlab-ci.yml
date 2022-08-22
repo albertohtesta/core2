@@ -120,7 +120,7 @@ publish-image-staging:
     - sed -i "s;#BUILD_ID#;$CI_COMMIT_SHORT_SHA;" ./build-info.json
     - sed -i "s;#BUILD_DATE#;$(TZ=':UTC' date);" ./build-info.json
     - sed -i "s;#BUILD_BRANCH#;$CI_COMMIT_REF_NAME;" ./build-info.json
-    - docker build -f Dockerfile.Staging  -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA .
+    - docker build -f Dockerfile.Staging -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA .
     - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA
   when: manual
   only:
@@ -142,7 +142,7 @@ publish-image-production:
     - sed -i "s;#BUILD_ID#;$CI_COMMIT_SHORT_SHA;" ./build-info.json
     - sed -i "s;#BUILD_DATE#;$(TZ=':UTC' date);" ./build-info.json
     - sed -i "s;#BUILD_BRANCH#;$CI_COMMIT_REF_NAME;" ./build-info.json
-    - docker build -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA .
+    - docker build -f Dockerfile -t $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA .
     - docker push $DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA
   only:
     - main
@@ -198,7 +198,7 @@ deploy-staging:
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"#NAME_SECRET_KEY_VALUE#","value":"#SECRET_KEY_VALUE#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"RAILS_ENV","value":"staging"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"PORT","value":"80"}]') >  input.json
-    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_URL","value":"amqps://wirfzcpt:L6FNqZTsqXPsNArTraTmYXAHEF0v_mGh@gull.rmq.cloudamqp.com/wirfzcpt"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_URL","value":"amqps://llamfzik:eA-1Qa4U6qJGr9mHuuHQnGA00iz3shvI@gull.rmq.cloudamqp.com/llamfzik"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_HOST","value":"gull-01.rmq.cloudamqp.com"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_VHOST","value":"wirfzcpt"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_USERNAME","value":"wirfzcpt"}]') >  input.json
