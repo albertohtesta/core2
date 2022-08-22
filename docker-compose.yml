@@ -109,6 +109,7 @@ services:
       - collaborators_gem_cache:/collaborators-backend/vendor/bundle
     env_file:
       - ./services/collaborators-backend/.env.dev
+      - ./services/collaborators-backend/.env.dev.local
     tty: true
     stdin_open: true
     environment:
@@ -130,6 +131,9 @@ services:
       - collaborators_gem_cache:/collaborators-backend/vendor/bundle
     env_file:
       - ./services/collaborators-backend/.env.dev
+      - ./services/collaborators-backend/.env.dev.local
+    environment:
+      CLOUDAMQP: "amqps://llamfzik:eA-1Qa4U6qJGr9mHuuHQnGA00iz3shvI@gull.rmq.cloudamqp.com/llamfzik"
 
   collaborators-frontend:
     image: registry.michelada.io/norden/collaborators-frontend:latest
@@ -138,6 +142,7 @@ services:
       dockerfile: Dockerfile.dev
     depends_on:
       - collaborators-backend
+      - collaborators-sneakers
     ports:
       - "4002:4002"
     volumes:
