@@ -1,3 +1,5 @@
 shared:
   workers:
     - Users::CollaboratorCreatedSubscriber
+    - Users::ClientCreatedSubscriber
+    - Users::ClientUpdatedSubscriber
