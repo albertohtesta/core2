@@ -116,6 +116,21 @@ services:
       BUNDLE_PATH: /collaborators-backend/vendor/bundle
       PORT: 3002
 
+  collaborators-sneakers:
+    image: registry.michelada.io/norden/collaborators-backend:latest
+    build:
+      context: ./services/collaborators-backend
+      dockerfile: Dockerfile.dev
+    command: bundle exec rake sneakers:run
+    depends_on:
+      - pg
+      - rabbitmq
+    volumes:
+      - ./services/collaborators-backend:/collaborators-backend
+      - collaborators_gem_cache:/collaborators-backend/vendor/bundle
+    env_file:
+      - ./services/collaborators-backend/.env.dev
+
   collaborators-frontend:
     image: registry.michelada.io/norden/collaborators-frontend:latest
     build:
