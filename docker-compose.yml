@@ -142,7 +142,6 @@ services:
       dockerfile: Dockerfile.dev
     depends_on:
       - collaborators-backend
-      - collaborators-sneakers
     ports:
       - "4002:4002"
     volumes:
