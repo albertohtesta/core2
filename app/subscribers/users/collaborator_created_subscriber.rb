@@ -5,11 +5,10 @@ module Users
     from_queue "core.collaborator_user.created"
 
     ATTRS = {
-      uid: :uid,
       email: :email
     }.freeze
 
-    def process
+    def process()
       Rails.logger.info permitted_attributes.inspect
     end
   end
