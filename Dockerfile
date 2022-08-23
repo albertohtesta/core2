@@ -9,8 +9,9 @@ WORKDIR $APP_DIR
 COPY Gemfile ./
 COPY Gemfile.lock ./
 
-ARG RAILS_ENV
+ARG RAILS_ENV=production
 ENV RACK_ENV=$RAILS_ENV
+ENV RAILS_ENV=$RAILS_ENV
 
 RUN gem install bundler
 
@@ -18,8 +19,10 @@ RUN bundle install
 
 COPY . ./
 
-EXPOSE 80
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
 
-ENV PORT 80
+EXPOSE 80
 
 CMD bundle exec rails s -p 80 -b '0.0.0.0'

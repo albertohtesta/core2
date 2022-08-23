@@ -7,14 +7,17 @@ Rails.application.routes.draw do
   get "/build-info", format: :json, to: "info#build_info"
   namespace :api do
     namespace :v1 do
-      scope module: :users do
+      namespace :admins do
         resource :registrations, only: :create
+        resource :roles, only: :update
+        resources :users, only: %i[index update]
+      end
+
+      scope module: :users do
         resource :passwords, only: %i[create update]
         resource :sessions, only: %i[create destroy]
         resource :forgot_passwords, only: :create
         resource :recover_passwords, only: :create
-        resource :roles, only: :update
-        resources :users, only: %i[index update]
       end
     end
   end

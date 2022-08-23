@@ -4,7 +4,75 @@ info:
   title: Core API V1
   version: v1
 paths:
-  "/api/v1/users/{id}":
+  "/api/v1/admins/registrations":
+    post:
+      summary: Register a new user
+      tags:
+      - Admins
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: Invitation sent successfully
+        '400':
+          description: 'Validation failed: Roles is not included in the list'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                groups_names:
+                  type: array
+              required:
+              - email
+              - groups_names
+  "/api/v1/admins/roles":
+    patch:
+      summary: Updates a user role
+      tags:
+      - Admins
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: user updated
+        '400':
+          description: bad request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              role:
+                email:
+                  type: string
+                groups_names:
+                  type: array
+              required:
+              - email
+              - groups_names
+  "/api/v1/admins/users":
+    get:
+      summary: List all users
+      tags:
+      - Admins
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: user updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/user"
+  "/api/v1/admins/users/{id}":
     parameters:
     - name: id
       in: path
@@ -15,7 +83,7 @@ paths:
     put:
       summary: Updates a user
       tags:
-      - Users
+      - Admins
       security:
       - Bearer: []
       parameters: []
@@ -29,6 +97,131 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/user"
+  "/api/v1/forgot_passwords":
+    post:
+      summary: Password Recovery for any user
+      tags:
+      - Admins Clients Collaborators
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: Password recovery email sent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              credentials:
+                username:
+                  type: string
+              required:
+              - username
+  "/api/v1/passwords":
+    put:
+      summary: Update a user password
+      tags:
+      - Admins Clients Collaborators
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: Password set successfully. A confirmation mail was sent.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              credentials:
+                username:
+                  type: string
+                password:
+                  type: string
+                new_password:
+                  type: string
+              required:
+              - username
+              - password
+              - new_password
+    post:
+      summary: Update a user password
+      tags:
+      - Admins Clients Collaborators
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: Password set successfully. A confirmation mail was sent.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              credentials:
+                username:
+                  type: string
+                password:
+                  type: string
+                new_password:
+                  type: string
+              required:
+              - username
+              - password
+              - new_password
+  "/api/v1/recover_passwords":
+    post:
+      summary: Recover a user password
+      tags:
+      - Admins Clients Collaborators
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: Password recovered
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              credentials:
+                username:
+                  type: string
+                password:
+                  type: string
+                confirmation_code:
+                  type: string
+              required:
+              - username
+              - password
+              - new_password
+  "/api/v1/sessions":
+    post:
+      summary: Creates a session for the given user
+      tags:
+      - Admins Clients Collaborators
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              session:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+              - username
+              - password
   "/build-info":
     get:
       summary: gets the build info
