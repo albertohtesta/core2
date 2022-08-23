@@ -10,7 +10,7 @@ module Users
     }.freeze
 
     def process
-      Rails.logger.info permitted_attributes.inspect
+      RegistrationService.new(permitted_attributes)
     end
   end
 end
