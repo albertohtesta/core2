@@ -50,12 +50,10 @@ services:
     build:
       context: ./services/clients-backend
       dockerfile: Dockerfile.dev
-    command: bundle exec rails s -p 3001 -b '0.0.0.0'
+    command: sh
     depends_on:
       - pg
       - rabbitmq
-      - redis
-      - sidekiq
     ports:
       - "3001:3001"
     volumes:

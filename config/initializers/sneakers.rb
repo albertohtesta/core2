@@ -3,9 +3,11 @@
 ENV["WORKERS"] = Rails.application.config.sneakers.workers.join(",")
 Sneakers.configure(
   heartbeat: 30,
-  amqp: ENV.fetch("CLOUDAMQP_URL", "amqp://guest:guest@rabbitmq:5672"),
-  vhost: ENV.fetch("CLOUDAMQP_VHOST", "/"),
-  exchange: ENV.fetch("RABBITMQ_EXCHANGE", "norden"),
+  amqp: Rails.application.config.sneakers.amqp_url,
+  vhost: Rails.application.config.sneakers.vhost,
+  exchange: Rails.application.config.sneakers.exchange,
   exchange_type: :direct,
-  durable: true
+  durable: true,
+  workers: Rails.application.config.sneakers.max_workers,
+  threads: Rails.application.config.sneakers.max_threads
 )
