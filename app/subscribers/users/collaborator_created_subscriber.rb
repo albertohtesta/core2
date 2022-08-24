@@ -8,7 +8,7 @@ module Users
       email: :email
     }.freeze
 
-    def process()
+    def process
       Rails.logger.info permitted_attributes.inspect
     end
   end
