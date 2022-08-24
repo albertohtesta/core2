@@ -1,3 +1,7 @@
 shared:
   workers:
     - Users::CollaboratorCreatedSubscriber
+  amqp_url: <%= ENV.fetch("CLOUDAMQP_URL", "amqp://guest:guest@rabbitmq:5672") %>
+  vhost: <%= ENV.fetch("CLOUDAMQP_VHOST", "/") %>
+  max_workers: 1
+  max_threads: 2
