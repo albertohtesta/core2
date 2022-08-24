@@ -3,14 +3,16 @@
 module Users
   class ClientRequestSubscriber < ApplicationSubscriber
     from_queue "core.client_user.request"
+    ROLE = { roles: ["client"] }
 
     ATTRS = {
-      uuid: :uid,
       email: :email
     }.freeze
 
     def process
-      Rails.logger.info permitted_attributes
+      params = permitted_attributes.merge(ROLE)
+      service = RegisterService.new(params)
+      service.create_user
     end
   end
 end
