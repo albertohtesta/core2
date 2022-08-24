@@ -35,7 +35,7 @@ class RegistrationService < CognitoService
   def add_user_to_table(params)
     user.update!(
       {
-        uid: params.user.username,
+        uuid: params.user.username,
         roles: @user_object[:groups_names]
       }
     )
