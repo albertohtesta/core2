@@ -50,12 +50,10 @@ services:
     build:
       context: ./services/clients-backend
       dockerfile: Dockerfile.dev
-    command: bundle exec rails s -p 3001 -b '0.0.0.0'
+    command: sh
     depends_on:
       - pg
       - rabbitmq
-      - redis
-      - sidekiq
     ports:
       - "3001:3001"
     volumes:
@@ -96,12 +94,10 @@ services:
     build:
       context: ./services/collaborators-backend
       dockerfile: Dockerfile.dev
-    command: bundle exec rails s -p 3002 -b '0.0.0.0'
+    command: sh
     depends_on:
       - pg
       - rabbitmq
-      - redis
-      - sidekiq
     ports:
       - "3002:3002"
     volumes:
@@ -164,32 +160,6 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq/
       - rabbitmq_log:/var/log/rabbitmq
-
-  sidekiq:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    command: bundle exec sidekiq
-    depends_on:
-      - redis
-    volumes:
-      - .:/core-backend
-    env_file:
-      - .env.dev
-      - .env.dev.local
-
-  sneakers:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    command: bundle exec rake sneakers:run
-    depends_on:
-      - rabbitmq
-    volumes:
-      - .:/core-backend
-    env_file:
-      - .env.dev
-      - .env.dev.local
 
 volumes:
   core_gem_cache:

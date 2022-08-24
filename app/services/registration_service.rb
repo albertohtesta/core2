@@ -22,7 +22,7 @@ class RegistrationService < CognitoService
 
   def publish_created_user
     Users::CollaboratorCreatedPublisher.publish(user.attributes) if user.roles.include?("collaborator")
-    Users::ClientCreatedPublisher.publish(user.attributes) if user.roles.include?("clients")
+    Users::ClientCreatedPublisher.publish(user.attributes) if user.roles.include?("client")
   end
 
   def user
