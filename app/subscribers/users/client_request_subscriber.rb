@@ -10,7 +10,7 @@ module Users
     }.freeze
 
     def process
-      user = User.find_by_email(permitted_attributes[:email])
+      user = UserRepository.find_by_email(permitted_attributes[:email])
 
       if user
         service = UserService.new({ email: user.email })
