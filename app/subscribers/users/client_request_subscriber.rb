@@ -2,8 +2,8 @@
 
 module Users
   class ClientRequestSubscriber < ApplicationSubscriber
-    from_queue "core.client_user.request"
-    ROLE = { roles: ["client"] }
+    from_queue "clients.client_user.request"
+    ROLE = { groups_names: ["client"] }
 
     ATTRS = {
       email: :email
