@@ -10,11 +10,10 @@ module Users
     }.freeze
 
     def process
-      user = User.find_by(email: permitted_attributes[:email])
+      user = User.find_by_email(permitted_attributes[:email])
 
       if user
-        params = { email: user.email, is_enabled: true }
-        service = UserService.new(params)
+        service = UserService.new({ email: user.email })
         service.enable_user
       else
         params = { email: permitted_attributes[:email] }.merge(ROLE)
