@@ -106,12 +106,31 @@ services:
       - collaborators_gem_cache:/collaborators-backend/vendor/bundle
     env_file:
       - ./services/collaborators-backend/.env.dev
+      - ./services/collaborators-backend/.env.dev.local
     tty: true
     stdin_open: true
     environment:
       RAILS_ENV: development
       BUNDLE_PATH: /collaborators-backend/vendor/bundle
       PORT: 3002
+
+  collaborators-sneakers:
+    image: registry.michelada.io/norden/collaborators-backend:latest
+    build:
+      context: ./services/collaborators-backend
+      dockerfile: Dockerfile.dev
+    command: bundle exec rake sneakers:run
+    depends_on:
+      - pg
+      - rabbitmq
+    volumes:
+      - ./services/collaborators-backend:/collaborators-backend
+      - collaborators_gem_cache:/collaborators-backend/vendor/bundle
+    env_file:
+      - ./services/collaborators-backend/.env.dev
+      - ./services/collaborators-backend/.env.dev.local
+    environment:
+      CLOUDAMQP: "amqps://llamfzik:eA-1Qa4U6qJGr9mHuuHQnGA00iz3shvI@gull.rmq.cloudamqp.com/llamfzik"
 
   collaborators-frontend:
     image: registry.michelada.io/norden/collaborators-frontend:latest
