@@ -12,6 +12,7 @@ class ApplicationSubscriber
   def work(payload)
     @payload = safe_json(payload)
     process
+    ack!
   end
 
   protected

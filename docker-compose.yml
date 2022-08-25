@@ -94,7 +94,7 @@ services:
     build:
       context: ./services/collaborators-backend
       dockerfile: Dockerfile.dev
-    command: bundle exec rails s -p 3002 -b '0.0.0.0'
+    command: sh
     depends_on:
       - pg
       - rabbitmq

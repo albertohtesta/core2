@@ -7,6 +7,6 @@ FactoryBot.define do
     roles { ["admin"] }
     status { "CURRENT_STATUS" }
     is_enabled { true }
-    uid { Faker::Internet.uuid }
+    uuid { Faker::Internet.uuid }
   end
 end

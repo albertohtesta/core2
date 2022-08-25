@@ -9,7 +9,7 @@ class RegistrationService < CognitoService
       user.save!
       resp = CLIENT.admin_create_user(auth_object)
       add_user_to_table(resp)
-      publish_create
+      publish_created_user
       AddUserToAwsCognitoPoolGroupJob.perform_later(@user_object)
     rescue StandardError => e
       @error = e
@@ -20,8 +20,9 @@ class RegistrationService < CognitoService
 
   private
 
-  def publish_create
-    Users::CollaboratorCreatedPublisher.publish(user.attributes)
+  def publish_created_user
+    Users::CollaboratorCreatedPublisher.publish(user.attributes) if user.roles.include?("collaborator")
+    Users::ClientCreatedPublisher.publish(user.attributes) if user.roles.include?("client")
   end
 
   def user
@@ -34,7 +35,7 @@ class RegistrationService < CognitoService
   def add_user_to_table(params)
     user.update!(
       {
-        uid: params.user.username,
+        uuid: params.user.username,
         roles: @user_object[:groups_names]
       }
     )

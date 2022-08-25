@@ -4,9 +4,9 @@
 module WebmockHelper
   def login_as(user)
     jwk = JWT::JWK.new(OpenSSL::PKey::RSA.new(2048), "optional-kid")
-    payload = { username: user.uid,
+    payload = { username: user.uuid,
                 user_attributes: [
-                                  { name: "sub", value: user.uid },
+                                  { name: "sub", value: user.uuid },
                                   { name: "email_verified", value: "true" },
                                   { name: "email", value: user.email }
                                 ]
