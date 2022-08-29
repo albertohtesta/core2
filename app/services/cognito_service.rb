@@ -20,9 +20,9 @@ class CognitoService < ApplicationService
 
   def stub_get_user
     CLIENT.stub_responses(:get_user, {
-      username: User.last.uid,
+      username: User.last.uuid,
       user_attributes: [
-                        { name: "sub", value: User.last.uid },
+                        { name: "sub", value: User.last.uuid },
                         { name: "email_verified", value: "true" },
                         { name: "email", value: User.last.email }
                       ]

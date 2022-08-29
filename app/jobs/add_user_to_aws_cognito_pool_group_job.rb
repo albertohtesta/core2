@@ -18,7 +18,7 @@ class AddUserToAwsCognitoPoolGroupJob < ApplicationJob
   end
 
   def group_objects
-    @user_params[:groups_object].map do |role|
+    @user_params[:groups_names].map do |role|
       {
         user_pool_id: CognitoService::POOL_ID,
         username: @user_params[:email],

@@ -5,7 +5,6 @@ module Users
     from_queue "core.collaborator_user.created"
 
     ATTRS = {
-      uid: :uid,
       email: :email
     }.freeze
 
