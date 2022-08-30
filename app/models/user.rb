@@ -14,4 +14,12 @@ class User < ApplicationRecord
   def admin?
     roles.include?(ROLES[0])
   end
+
+  def collaborator?
+    roles.include?(ROLES[1])
+  end
+
+  def client?
+    roles.include?(ROLES[2])
+  end
 end
