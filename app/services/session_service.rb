@@ -2,16 +2,17 @@
 
 # authenticate cognito user
 class SessionService < CognitoService
-  attr_reader :error
+  attr_reader :error, :response
 
   def authenticate
     begin
-      resp = CLIENT.initiate_auth(auth_object)
+      response = CLIENT.initiate_auth(auth_object)
+      compare_roles_with_cognito
     rescue StandardError => e
       @error = e
       return false
     end
-    resp
+    response
   end
 
   def sign_out
@@ -25,6 +26,30 @@ class SessionService < CognitoService
   end
 
   private
+
+  def user_service
+    return unless response
+    UserService.new({ token: response.access_token })
+  end
+
+  def current_user_email
+    user_service.logged_user_email
+  end
+
+  def current_user_roles
+    user_service.logged_user
+  end
+
+  def user
+    @user ||= UserRepostory.find_by_email(user_email_from_access_token)
+  end
+
+  def compare_roles_with_cognito
+    unless user.roles == current_user_roles
+      @error = "The user is not authorized"
+      false
+    end
+  end
 
   def auth_object
     @auth_object ||= {
