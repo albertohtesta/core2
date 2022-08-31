@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
       scope module: :users do
         resource :passwords, only: %i[create update]
-        scope '/:role' do
+        scope "/:role" do
           resource :sessions, only: %i[create destroy]
         end
         resource :forgot_passwords, only: :create
