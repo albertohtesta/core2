@@ -2,8 +2,16 @@ shared:
   amqp_url: <%= ENV.fetch("CLOUDAMQP_URL", "amqp://guest:guest@rabbitmq:5672") %>
   exchange: "norden"
   vhost: <%= ENV.fetch("CLOUDAMQP_VHOST", "/") %>
-  max_workers: 1
-  max_threads: 2
+  max_workers: 2
+  max_threads: 3
   workers:
     - Users::CollaboratorCreatedSubscriber
     - Users::ClientRequestSubscriber
+development:
+  connection_name: core_development
+qa:
+  connection_name: core_qa
+staging:
+  connection_name: core_staging
+production:
+  connection_name: core_production
