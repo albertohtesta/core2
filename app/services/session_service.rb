@@ -2,12 +2,17 @@
 
 # authenticate cognito user
 class SessionService < CognitoService
-  attr_reader :error, :response
+  attr_accessor :user_object, :response, :role
+
+  def initialize(user_object, role)
+    @user_object = user_object
+    @role = role
+  end
 
   def authenticate
     begin
-      response = CLIENT.initiate_auth(auth_object)
-      compare_roles_with_cognito
+      @response = CLIENT.initiate_auth(auth_object)
+      validate_user_role
     rescue StandardError => e
       @error = e
       return false
@@ -17,7 +22,7 @@ class SessionService < CognitoService
 
   def sign_out
     begin
-      CLIENT.global_sign_out({ access_token: @user_object[:access_token] })
+      CLIENT.global_sign_out({ access_token: user_object[:access_token] })
     rescue StandardError => e
       @error = e
       return false
@@ -28,26 +33,22 @@ class SessionService < CognitoService
   private
 
   def user_service
-    return unless response
-    UserService.new({ token: response.access_token })
+    UserService.new({ token: response.authentication_result.access_token })
   end
 
   def current_user_email
     user_service.logged_user_email
   end
 
-  def current_user_roles
-    user_service.logged_user
-  end
-
   def user
-    @user ||= UserRepostory.find_by_email(user_email_from_access_token)
+    @user ||= UserRepository.find_by_email(current_user_email)
   end
 
-  def compare_roles_with_cognito
-    unless user.roles == current_user_roles
-      @error = "The user is not authorized"
-      false
+  def validate_user_role
+    raise ActiveRecord::RecordNotFound.new("The user was not found") unless user
+
+    unless user.roles.include?(role)
+      raise ActiveRecord::RecordNotFound.new("This user is not authorized to perform this action")
     end
   end
 
@@ -55,14 +56,10 @@ class SessionService < CognitoService
     @auth_object ||= {
       client_id: CLIENT_ID,
       auth_flow: "USER_PASSWORD_AUTH",
-      auth_parameters: session_params
-    }
-  end
-
-  def session_params
-    @session_params ||= {
-      USERNAME: @user_object[:username],
-      PASSWORD: @user_object[:password]
+      auth_parameters: {
+        USERNAME: user_object[:username],
+        PASSWORD: user_object[:password]
+      }
     }
   end
 end
