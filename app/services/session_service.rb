@@ -2,6 +2,7 @@
 
 # authenticate cognito user
 class SessionService < CognitoService
+  attr_reader :error
   attr_accessor :user_object, :response, :role
 
   def initialize(user_object, role)
@@ -33,7 +34,7 @@ class SessionService < CognitoService
   private
 
   def user_service
-    UserService.new({ token: response.authentication_result.access_token })
+    @user_service ||= UserService.new({ token: response.authentication_result.access_token })
   end
 
   def current_user_email
