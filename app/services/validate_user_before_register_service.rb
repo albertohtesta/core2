@@ -8,17 +8,21 @@ class ValidateUserBeforeRegisterService < ApplicationService
     @payload = payload
   end
 
-  def perform
+  def process
     service = RegistrationService.new(payload)
     service.create_user
   end
 
   def valid?
-    add_error("This user already was invited") if find_user
-    add_error("This use already has this role") if role_already_taken?
+    publish_error("This user #{payload[:email]} already was invited") if find_user
+    publish_error("The user #{payload[:email]} already have this #{payload[:role]} role") if role_already_taken?
   end
 
   private
+
+  def publish_error(message)
+    Users::ClientCreatedPublisher.publish(message)
+  end
 
   def find_user
     UserRepository.find_by_email(payload[:email])
