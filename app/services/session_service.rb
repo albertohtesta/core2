@@ -47,10 +47,7 @@ class SessionService < CognitoService
 
   def validate_user_role
     raise ActiveRecord::RecordNotFound.new("The user was not found") unless user
-
-    unless user.roles.include?(role)
-      raise ActiveRecord::RecordNotFound.new("This user is not authorized to perform this action")
-    end
+    raise AuthorizationError.new("The user is not allowed to perfom this action") unless user.roles.include?(role)
   end
 
   def auth_object
