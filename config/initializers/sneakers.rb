@@ -7,7 +7,7 @@ Sneakers.configure(
   vhost: Rails.application.config.sneakers.vhost,
   exchange: Rails.application.config.sneakers.exchange,
   exchange_type: :direct,
-  durable: true,
   workers: Rails.application.config.sneakers.max_workers,
-  threads: Rails.application.config.sneakers.max_threads
+  threads: Rails.application.config.sneakers.max_threads,
+  timeout_job_after: 10
 )

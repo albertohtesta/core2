@@ -2,5 +2,10 @@
 
 require "bunny-mock"
 
-CONN = Rails.env.test? ? BunnyMock.new.start : Bunny.new(ENV.fetch("CLOUDAMQP_URL", "amqp://guest:guest@rabbitmq:5672")).tap(&:start)
-RABBIT_MQ = CONN
+if Rails.env.test?
+  RABBIT_MQ = BunnyMock.new
+else
+  RABBIT_MQ = Bunny.new(
+    ENV.fetch("CLOUDAMQP_URL", "amqp://guest:guest@rabbitmq:5672")
+  )
+end
