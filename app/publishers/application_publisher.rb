@@ -10,8 +10,8 @@ class ApplicationPublisher
       self.persistent = persistent
     end
 
-    def publish(message, **args)
-      validate(message)
+    def publish(message, validate_schema: true, **args)
+      validate(message) if validate_schema
       new(**args).publish(message)
     end
 
