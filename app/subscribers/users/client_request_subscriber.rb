@@ -3,7 +3,7 @@
 module Users
   class ClientRequestSubscriber < ApplicationSubscriber
     from_queue "clients.client_user.request", ack: true
-    ROLE = { groups_names: ["client"] }
+    ROLE = { roles: "client" }
 
     ATTRS = {
       email: :email
