@@ -2,7 +2,7 @@
 
 module Users
   class CollaboratorCreatedSubscriber < ApplicationSubscriber
-    from_queue "collaboratos.collaborator_user.request"
+    from_queue "core.collaborator_user.new"
     ROLE = { groups_names: ["collaborator"] }
 
     ATTRS = {
@@ -10,7 +10,7 @@ module Users
     }.freeze
 
     def process
-      ValidateUserBeforeRegisterService.perform(
+      ValidateUserBeforeRegisterService.for(
         { email: permitted_attributes[:email] }.merge(ROLE)
       )
     end
