@@ -193,7 +193,7 @@ deploy-staging:
     - amazon-linux-extras install docker
     - yum install -y util-linux pciutils usbutils coreutils binutils findutils grep jq
   script:
-    - COMPLETE_ROUTE="$DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA"
+    - COMPLETE_ROUTE="$DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-staging:$CI_COMMIT_SHORT_SHA"
     - echo `aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-staging --region $AWS_DEFAULT_REGION` > input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].image="#COMPLETE_ROUTE#"') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"#NAME_SECRET_KEY_VALUE#","value":"#SECRET_KEY_VALUE#"}]') >  input.json
@@ -227,7 +227,7 @@ deploy-production:
     - amazon-linux-extras install docker
     - yum install -y jq
   script:
-    - COMPLETE_ROUTE="$DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-qa:$CI_COMMIT_SHORT_SHA"
+    - COMPLETE_ROUTE="$DOCKER_REGISTRY/$PREFIX-$CI_PROJECT_NAME-production:$CI_COMMIT_SHORT_SHA"
     - echo `aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-production --region $AWS_DEFAULT_REGION` > input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].image="#COMPLETE_ROUTE#"') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"#NAME_SECRET_KEY_VALUE#","value":"#SECRET_KEY_VALUE#"}]') >  input.json
