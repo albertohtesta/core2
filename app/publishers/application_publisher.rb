@@ -10,15 +10,17 @@ class ApplicationPublisher
       self.persistent = persistent
     end
 
-    def publish(message, validate_schema: true, **args)
-      validate(message) if validate_schema
+    def publish(message, **args)
+      validate(message)
       new(**args).publish(message)
     end
 
     def validate(message)
       errors = []
+      message = message.with_indifferent_access
+
       self::SCHEMA.each do |attribute, allowed_classes|
-        next if allowed_classes.include?(message[attribute.to_s].class)
+        next if allowed_classes.include?(message[attribute].class)
 
         errors << "value #{attribute}: #{message[attribute]} is not in allowed classes #{allowed_classes}"
       end
