@@ -10,11 +10,12 @@ class ValidateUserBeforeRegisterService < ApplicationService
 
   def process
     if registered_user && role_already_taken?
-      return publish_message("The user #{payload[:email]} already have this #{role} role")
+      return publish_failed_message("The user #{payload[:email]} already have this #{role} role")
     end
 
     if registered_user
       update_role
+      publish_updated_message(registered_user)
     else
       service = RegistrationService.new(payload)
       service.create_user
@@ -24,8 +25,14 @@ class ValidateUserBeforeRegisterService < ApplicationService
 
   private
 
-  def publish_message(message)
-    Users::CollaboratorFailedPublisher.publish({ message: }, validate_schema: false)
+  def publish_failed_message(message)
+    current_class = role.capitalize
+    "Users::#{current_class}FailedPublisher".constantize.publish({ message: })
+  end
+
+  def publish_updated_message(user)
+    current_class = role.capitalize
+    "Users::#{current_class}CreatedPublisher".constantize.publish(user.attributes)
   end
 
   def registered_user
