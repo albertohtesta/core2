@@ -4,7 +4,6 @@
 class User < ApplicationRecord
   ROLES = %w[admin collaborator client]
 
-  enum role: [:admin, :collaborator]
   serialize :roles, Array
 
   validates :email, presence: true, uniqueness: true
