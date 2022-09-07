@@ -17,8 +17,10 @@ class ApplicationPublisher
 
     def validate(message)
       errors = []
+      message = message.with_indifferent_access
+
       self::SCHEMA.each do |attribute, allowed_classes|
-        next if allowed_classes.include?(message[attribute.to_s].class)
+        next if allowed_classes.include?(message[attribute].class)
 
         errors << "value #{attribute}: #{message[attribute]} is not in allowed classes #{allowed_classes}"
       end

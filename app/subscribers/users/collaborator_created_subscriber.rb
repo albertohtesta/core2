@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Users
-  class ClientRequestSubscriber < ApplicationSubscriber
-    from_queue "clients.client_user.request", ack: true
-    ROLE = { groups_names: ["client"] }
+  class CollaboratorCreatedSubscriber < ApplicationSubscriber
+    from_queue "core.collaborator_user.new"
+    ROLE = { groups_names: ["collaborator"] }
 
     ATTRS = {
       email: :email

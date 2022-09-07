@@ -18,17 +18,17 @@ class ApplicationSubscriber
   protected
 
   def permitted_attributes
-    @permitted_attributes ||= self.class::ATTRS.keys.each_with_object({}) do |key, memo|
-      memo[key] = attribute(key)
-      memo
+    @permitted_attributes ||= self.class::ATTRS.keys.each_with_object({}) do |key, permitted_payload|
+      permitted_payload[key] = value(key)
+      permitted_payload
     end
   end
 
-  def attribute(key)
-    attributes[self.class::ATTRS[key]]
+  def value(key)
+    parsed_payload[self.class::ATTRS[key]]
   end
 
-  def attributes(content)
-    @attributes ||= JSON.parse(content, symbolize_names: true)
+  def parsed_payload
+    @parsed_payload ||= JSON.parse(@payload, symbolize_names: true)
   end
 end
