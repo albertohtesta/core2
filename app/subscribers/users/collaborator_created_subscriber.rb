@@ -10,9 +10,7 @@ module Users
     }.freeze
 
     def process
-      ValidateUserBeforeRegisterService.for(
-        { email: permitted_attributes[:email] }.merge(ROLE)
-      )
+      ValidateUserBeforeRegisterService.for(permitted_attributes.merge(ROLE))
     end
   end
 end

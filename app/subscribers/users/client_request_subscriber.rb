@@ -2,7 +2,7 @@
 
 module Users
   class ClientRequestSubscriber < ApplicationSubscriber
-    from_queue "core.client_user.new", ack: true
+    from_queue "clients.client_user.request", ack: true
     ROLE = { groups_names: ["client"] }
 
     ATTRS = {
@@ -10,9 +10,7 @@ module Users
     }.freeze
 
     def process
-      ValidateUserBeforeRegisterService.for(
-        { email: permitted_attributes[:email] }.merge(ROLE)
-      )
+      ValidateUserBeforeRegisterService.for(permitted_attributes.merge(ROLE))
     end
   end
 end
