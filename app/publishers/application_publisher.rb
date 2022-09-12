@@ -11,23 +11,28 @@ class ApplicationPublisher
     end
 
     def publish(message, **args)
-      validate(message)
-      new(**args).publish(message)
+      permitted_message = validate(message)
+      new(**args).publish(permitted_message)
     end
 
     def validate(message)
       errors = []
+      permitted_message = {}
       message = message.with_indifferent_access
 
       self::SCHEMA.each do |attribute, allowed_classes|
-        next if allowed_classes.include?(message[attribute].class)
-
-        errors << "value #{attribute}: #{message[attribute]} is not in allowed classes #{allowed_classes}"
+        if allowed_classes.include?(message[attribute].class)
+          permitted_message[attribute] = message[attribute]
+        else
+          errors << "value #{attribute}: #{message[attribute]} is not in allowed classes #{allowed_classes}"
+        end
       end
 
       if errors.any?
         raise SchemaError.new(errors)
       end
+
+      permitted_message
     end
   end
 

@@ -2,7 +2,7 @@
 
 module Users
   class CollaboratorCreatedSubscriber < ApplicationSubscriber
-    from_queue "core.collaborator_user.new"
+    from_queue "core.collaborator_user.new", ack: true
     ROLE = { groups_names: ["collaborator"] }
 
     ATTRS = {
