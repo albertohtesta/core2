@@ -25,4 +25,4 @@ ENTRYPOINT ["entrypoint.sh"]
 
 EXPOSE 80
 
-CMD bundle exec rails db:seed:replant && bundle exec rails s -p 80 -b '0.0.0.0'
+CMD bundle exec rails s -p 80 -b '0.0.0.0'
