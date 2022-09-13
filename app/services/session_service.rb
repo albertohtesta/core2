@@ -18,7 +18,7 @@ class SessionService < CognitoService
       @error = e
       return false
     end
-    response
+    response.authentication_result.to_h.merge(email: user.email)
   end
 
   def sign_out

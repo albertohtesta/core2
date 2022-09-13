@@ -17,9 +17,7 @@ RSpec.describe SessionService do
     it "should return an access token" do
       auth_token = service.authenticate
 
-      expect(auth_token.authentication_result).to be_a_kind_of(
-        Aws::CognitoIdentityProvider::Types::AuthenticationResultType
-      )
+      expect(auth_token).to be_a_kind_of(Hash)
     end
 
     before do
