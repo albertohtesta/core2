@@ -10,10 +10,10 @@ module Api
 
         def create
           session_service = SessionService.new(session_params, params[:role])
-          session = session_service.authenticate
+          session_auth = session_service.authenticate
 
-          if session
-            render json: { data: session.authentication_result }, status: :ok
+          if session_auth
+            render json: { data: session_auth }, status: :ok
           else
             render json: { errors: session_service.error }, status: :bad_request
           end
