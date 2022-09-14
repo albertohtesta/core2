@@ -164,11 +164,11 @@ deploy-qa:
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"#NAME_SECRET_KEY_VALUE#","value":"#SECRET_KEY_VALUE#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"RAILS_ENV","value":"qa"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"PORT","value":"80"}]') >  input.json
-    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_URL","value":"amqps://llamfzik:eA-1Qa4U6qJGr9mHuuHQnGA00iz3shvI@gull.rmq.cloudamqp.com/llamfzik"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_URL","value":"amqps://vefqvdwt:EfI20crJRCDGAu41BpRImZAcDfjg3Ies@gull.rmq.cloudamqp.com/vefqvdwt"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_HOST","value":"gull-01.rmq.cloudamqp.com"}]') >  input.json
-    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_VHOST","value":"llamfzik"}]') >  input.json
-    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_USERNAME","value":"llamfzik"}]') >  input.json
-    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_PASSWORD","value":"eA-1Qa4U6qJGr9mHuuHQnGA00iz3shvI"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_VHOST","value":"vefqvdwt"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_USERNAME","value":"vefqvdwt"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_PASSWORD","value":"EfI20crJRCDGAu41BpRImZAcDfjg3Ies"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"TYPE_FORM_ACCESS_TOKEN","value":"tfp_GvFAv7rEnRyb24AEyu9xyQ4rxW5XgGcMq5CCfqHo6tYw_h2eKzgc9jw7H"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"RAILS_LOG_TO_STDOUT","value":"true"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"SMTP_ADDRESS","value":"#SMTP_ADDRESS#"}]') >  input.json
