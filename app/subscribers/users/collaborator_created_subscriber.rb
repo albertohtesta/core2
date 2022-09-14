@@ -10,7 +10,7 @@ module Users
     }.freeze
 
     def process
-      ValidateUserBeforeRegisterService.for(permitted_attributes.merge(ROLE))
+      ::ValidateUserBeforeRegisterService.for(permitted_attributes.merge(ROLE))
     end
   end
 end
