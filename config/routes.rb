@@ -11,6 +11,8 @@ Rails.application.routes.draw do
         resource :registrations, only: :create
         resource :roles, only: :update
         resources :users, only: %i[index update]
+        match "collaborator", to: "invites#collaborator", via: :post
+        match "client", to: "invites#collaborator", via: :post
       end
 
       scope module: :users do
