@@ -15,6 +15,7 @@ class SessionService < CognitoService
       @response = CLIENT.initiate_auth(auth_object)
       validate_user_role
     rescue StandardError => e
+      Rollbar.error("SessionService#authenticate Error", error: e, params: @user_object, role:)
       @error = e
       return false
     end
@@ -25,6 +26,7 @@ class SessionService < CognitoService
     begin
       CLIENT.global_sign_out({ access_token: user_object[:access_token] })
     rescue StandardError => e
+      Rollbar.error("SessionService#sign_out Error", error: e, params: @user_object, role:)
       @error = e
       return false
     end

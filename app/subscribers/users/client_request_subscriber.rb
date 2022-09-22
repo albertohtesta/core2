@@ -10,7 +10,10 @@ module Users
     }.freeze
 
     def process
-      ::ValidateUserBeforeRegisterService.for(permitted_attributes.merge(ROLE))
+      client_params = permitted_attributes.merge(ROLE)
+
+      ::Rollbar.info("Users::ClientRequestSubscriber#process", params: client_params)
+      ::ValidateUserBeforeRegisterService.for(client_params)
     end
   end
 end
