@@ -8,12 +8,14 @@ class RegistrationService < CognitoService
     ActiveRecord::Base.transaction do
       User.create!(email: @user_object[:email], roles: @user_object[:groups_names])
     rescue StandardError => e
+      Rollbar.error("RegistrationService#create_user Error", error: e, params: @user_object)
       @error = e
       return false
     end
 
     begin
       resp = CognitoService::CLIENT.admin_create_user(auth_object)
+      Rollbar.info("RegistrationService", cognito_response: resp)
       add_user_to_table(resp)
       publish_created_user
       AddUserToAwsCognitoPoolGroupJob.perform_later(@user_object)
@@ -27,6 +29,7 @@ class RegistrationService < CognitoService
   private
 
   def publish_created_user
+    Rollbar.info("RegistrationService Publisher", user:)
     Users::CollaboratorCreatedPublisher.publish(user.attributes) if user.roles.include?("collaborator")
     Users::ClientCreatedPublisher.publish(user.attributes) if user.roles.include?("client")
   end

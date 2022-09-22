@@ -10,6 +10,11 @@ class ValidateUserBeforeRegisterService < ApplicationService
 
   def process
     if registered_user && role_taken?
+      Rollbar.info(
+        "ValidateUserBeforeRegisterService#process",
+        message: "The user #{payload[:email]} already have this #{role} role",
+        user: registered_user
+      )
       return publish_failed_message("The user #{payload[:email]} already have this #{role} role")
     end
 
@@ -50,8 +55,10 @@ class ValidateUserBeforeRegisterService < ApplicationService
       registered_user.roles << role
       registered_user.save!
       CognitoService::CLIENT.admin_add_user_to_group(user_object)
+      Rollbar.info("ValidateUserBeforeRegisterService updated role", user: registered_user)
     rescue ActiveRecord::RecordInvalid => e
       CognitoService::CLIENT.admin_remove_user_from_group(user_object)
+      Rollbar.error("ValidateUserBeforeRegisterService::Error", error: e, user: registered_user, role:)
       @error = e
       return false
     end
