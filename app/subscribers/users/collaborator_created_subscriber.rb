@@ -10,8 +10,10 @@ module Users
     }.freeze
 
     def process
-      Rollbar.info("Users::CollaboratorCreatedSubscriber#process", params: permitted_attributes.merge(ROLE))
-      ::ValidateUserBeforeRegisterService.for(permitted_attributes.merge(ROLE))
+      collaborator_params = permitted_attributes.merge(ROLE)
+
+      ::Rollbar.info("Users::CollaboratorCreatedSubscriber#process", params: collaborator_params)
+      ::ValidateUserBeforeRegisterService.for(collaborator_params)
     end
   end
 end
