@@ -16,21 +16,13 @@ module Api
         end
 
         def update
-          user_service = UserService.new(user_params)
+          service = ::Admin::ManageUserService.call(user_id: params[:id])
 
-          update_user = user_params[:is_enabled] ? user_service.enable_user : user_service.disable_user
-
-          if update_user
-            render json: { message: user_params[:is_enabled] ? "User was enabled" : "User was disabled" }, status: :ok
+          if service.success?
+            render json: ::Users::UserPresenter.json_collection(service.user), status: :ok
           else
-            render json: { errors: user_service.error }, status: :unprocessable_entity
+            render json: { errors: service.error }, status: :unprocessable_entity
           end
-        end
-
-        private
-
-        def user_params
-          params.require(:user).permit(:email, :is_enabled)
         end
       end
     end
