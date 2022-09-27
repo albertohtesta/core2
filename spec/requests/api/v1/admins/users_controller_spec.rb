@@ -39,18 +39,15 @@ describe "Admins::Users", type: :request do
       security [ Bearer: [] ]
       consumes "application/json"
       produces "application/json"
-      parameter name: :user_params, in: :body, schema: {
-        "$ref" => "#/components/schemas/user"
-      }
 
       response "200", "user updated" do
-        let(:user_params) { { email: user.email, is_enabled: false } }
+        let(:id) { FactoryBot.create(:user).id }
 
         run_test!
       end
 
       response "422", "unprocessable entity" do
-        let(:user_params) { { email: "foo" } }
+        let(:id) { 2342343 }
 
         run_test!
       end
