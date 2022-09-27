@@ -22,7 +22,7 @@ module Admin
       user.lock!
       user.toggle!(:is_enabled)
       manage_user_from_cognito
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::ActiveRecordError => e
       context.fail!(error: e)
       Rollbar.error("Admin::ManageUserService::Error", error: e, user:)
     end

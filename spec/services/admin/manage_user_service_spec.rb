@@ -7,17 +7,23 @@ RSpec.describe Admin::ManageUserService do
   let(:user_id) { user.id }
   subject(:service) { described_class.call(user_id:) }
 
-  context "with valid params" do
-    it "should be success" do
-      expect(service.success?).to eq(true)
-    end
+  context "when we are disabling the user" do
+    it { expect(service).to be_a_success }
+    it { expect(service.user.is_enabled).to eq(false) }
+  end
+
+  context "when we are enabling the user" do
+    let(:user_id) { create(:user, is_enabled: false).id }
+
+    it { expect(service).to be_a_success }
+    it { expect(service.user.is_enabled).to eq(true) }
   end
 
   context "with invalid params" do
     let(:user_id) { 234343 }
 
-    it "should return be false" do
-      expect(service.success?).to eq(false)
+    it { expect(service).to be_a_failure }
+    it "should return an error message" do
       expect(service.error).to match("The given user was not found")
     end
   end
