@@ -129,6 +129,7 @@ GEM
     hashdiff (1.0.1)
     i18n (1.11.0)
       concurrent-ruby (~> 1.0)
+    interactor (3.1.2)
     io-console (0.5.11)
     irb (1.4.1)
       reline (>= 0.3.0)
@@ -367,6 +368,7 @@ DEPENDENCIES
   debug
   factory_bot_rails
   faker
+  interactor
   jbuilder
   json
   jwt

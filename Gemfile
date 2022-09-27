@@ -10,6 +10,7 @@ gem "aws-sdk-cognitoidentityprovider"
 gem "bootsnap", require: false
 gem "bunny"
 gem "bunny-mock"
+gem "interactor"
 gem "jbuilder"
 gem "json"
 gem "jwt"
