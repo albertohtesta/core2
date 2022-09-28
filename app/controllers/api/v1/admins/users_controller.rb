@@ -6,7 +6,11 @@ module Api
       # Users endpoint
       class UsersController < ApiAdminController
         def index
-          @users = ::Users::UserPresenter.paginate_collection(UserRepository.ordered_by_email.page(params[:page]).per(10))
+          @users = ::Users::UserPresenter.paginate_collection(
+            UserRepository.filter_by_admin_and_client_users
+            .page(params[:page])
+            .per(10)
+          )
 
           if @users
             render json: @users
