@@ -162,6 +162,8 @@ deploy-qa:
     - echo `aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-qa --region $AWS_DEFAULT_REGION` > input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].image="#COMPLETE_ROUTE#"') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"#NAME_SECRET_KEY_VALUE#","value":"#SECRET_KEY_VALUE#"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"AWS_ACCESS_KEY_ID","value":"#AWS_ACCESS_KEY_ID#"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"AWS_SECRET_ACCESS_KEY","value":"#AWS_SECRET_ACCESS_KEY#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"RAILS_ENV","value":"qa"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"PORT","value":"80"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_URL","value":"amqps://vefqvdwt:EfI20crJRCDGAu41BpRImZAcDfjg3Ies@gull.rmq.cloudamqp.com/vefqvdwt"}]') >  input.json
@@ -175,6 +177,8 @@ deploy-qa:
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"SMTP_USER","value":"#SMTP_USER#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"SMTP_PASSWORD","value":"#SMTP_PASSWORD#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"ROLLBAR_ACCESS_TOKEN","value":"da4e07927db64c8da0fd1aaadc7ff0fe"}]') >  input.json
+    - sed -i "s@#AWS_ACCESS_KEY_ID#@$AWS_ACCESS_KEY_ID@" input.json
+    - sed -i "s@#AWS_SECRET_ACCESS_KEY#@$AWS_SECRET_ACCESS_KEY@" input.json
     - sed -i "s@#SMTP_ADDRESS#@SMTP_ADDRESS@" input.json
     - sed -i "s@#SMTP_USER#@$SMTP_USER@" input.json
     - sed -i "s@#SMTP_PASSWORD#@$SMTP_PASSWORD@" input.json
@@ -205,6 +209,8 @@ deploy-staging:
     - echo `aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-staging --region $AWS_DEFAULT_REGION` > input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].image="#COMPLETE_ROUTE#"') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"#NAME_SECRET_KEY_VALUE#","value":"#SECRET_KEY_VALUE#"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"AWS_ACCESS_KEY_ID","value":"#AWS_ACCESS_KEY_ID#"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"AWS_SECRET_ACCESS_KEY","value":"#AWS_SECRET_ACCESS_KEY#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"RAILS_ENV","value":"staging"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"PORT","value":"80"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_URL","value":"amqps://wirfzcpt:L6FNqZTsqXPsNArTraTmYXAHEF0v_mGh@gull.rmq.cloudamqp.com/wirfzcpt"}]') >  input.json
@@ -218,6 +224,8 @@ deploy-staging:
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"SMTP_USER","value":"#SMTP_USER#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"SMTP_PASSWORD","value":"#SMTP_PASSWORD#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"ROLLBAR_ACCESS_TOKEN","value":"5351ff29194248d19469d73f4723244e"}]') >  input.json
+    - sed -i "s@#AWS_ACCESS_KEY_ID#@$AWS_ACCESS_KEY_ID_STAGING@" input.json
+    - sed -i "s@#AWS_SECRET_ACCESS_KEY#@$AWS_SECRET_ACCESS_KEY_STAGING@" input.json
     - sed -i "s@#SMTP_ADDRESS#@SMTP_ADDRESS@" input.json
     - sed -i "s@#SMTP_USER#@$SMTP_USER@" input.json
     - sed -i "s@#SMTP_PASSWORD#@$SMTP_PASSWORD@" input.json
@@ -247,6 +255,8 @@ deploy-production:
     - echo `aws ecs describe-task-definition --task-definition $PREFIX-$CI_PROJECT_NAME-production --region $AWS_DEFAULT_REGION` > input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].image="#COMPLETE_ROUTE#"') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"#NAME_SECRET_KEY_VALUE#","value":"#SECRET_KEY_VALUE#"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"AWS_ACCESS_KEY_ID","value":"#AWS_ACCESS_KEY_ID#"}]') >  input.json
+    - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"AWS_SECRET_ACCESS_KEY","value":"#AWS_SECRET_ACCESS_KEY#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"RAILS_ENV","value":"production"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"PORT","value":"80"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"CLOUDAMQP_URL","value":"amqps://jyaocfet:Yc_mXCYNYdeGpTNJOYQX_qc3BoxtICeO@gull.rmq.cloudamqp.com/jyaocfet"}]') >  input.json
@@ -260,6 +270,8 @@ deploy-production:
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"SMTP_USER","value":"#SMTP_USER#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"SMTP_PASSWORD","value":"#SMTP_PASSWORD#"}]') >  input.json
     - echo $(cat input.json | jq '.taskDefinition.containerDefinitions[].environment += [{"name":"ROLLBAR_ACCESS_TOKEN","value":"5351ff29194248d19469d73f4723244e"}]') >  input.json
+    - sed -i "s@#AWS_ACCESS_KEY_ID#@$AWS_ACCESS_KEY_ID_PRODUCTION@" input.json
+    - sed -i "s@#AWS_SECRET_ACCESS_KEY#@$AWS_SECRET_ACCESS_KEY_PRODUCTION@" input.json
     - sed -i "s@#SMTP_ADDRESS#@SMTP_ADDRESS@" input.json
     - sed -i "s@#SMTP_USER#@$SMTP_USER@" input.json
     - sed -i "s@#SMTP_PASSWORD#@$SMTP_PASSWORD@" input.json
