@@ -10,7 +10,7 @@ RSpec.describe SessionService do
       password: "Password123!"
     }
   end
-  let(:role) { user.roles.first }
+  let(:role) { "admin_collaborator" }
   subject(:service) { described_class.new(user_object, role) }
 
   context "with valid params" do
