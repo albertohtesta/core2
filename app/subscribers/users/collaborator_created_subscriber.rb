@@ -11,6 +11,7 @@ module Users
 
     def process
       collaborator_params = permitted_attributes.merge(ROLE)
+      puts("INVITATION from collaborators: #{collaborator_params}")
 
       ::Rollbar.info("Users::CollaboratorCreatedSubscriber#process", params: collaborator_params)
       ::ValidateUserBeforeRegisterService.for(collaborator_params)
