@@ -15,7 +15,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     "https://collaborators.nordhen.com", 
     "https://qa-finances.nordhen.com", 
     "https://staging-finances.nordhen.com", 
-    "https://finances.nordhen.com".
+    "https://finances.nordhen.com",
     "https://qa-core-api.nordhen.com", 
     "https://staging-core-api.nordhen.com", 
     "https://api.nordhen.com", 
