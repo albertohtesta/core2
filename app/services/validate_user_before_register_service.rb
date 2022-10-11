@@ -39,7 +39,7 @@ class ValidateUserBeforeRegisterService < ApplicationService
   end
 
   def registered_user
-    @registered_user ||= UserRepository.find_by_email(payload[:email])
+    UserRepository.find_by_email(payload[:email])
   end
 
   def role
@@ -52,8 +52,9 @@ class ValidateUserBeforeRegisterService < ApplicationService
 
   def update_role
     ActiveRecord::Base.transaction do
-      registered_user.roles << role
-      registered_user.save!
+      user = registered_user
+      user.roles << role
+      user.save!
       CognitoService::CLIENT.admin_add_user_to_group(user_object)
       Rollbar.info("ValidateUserBeforeRegisterService updated role", user: registered_user)
     rescue ActiveRecord::RecordInvalid => e

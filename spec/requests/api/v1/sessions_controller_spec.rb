@@ -14,7 +14,7 @@ describe "Session", type: :request do
       login_as(user)
     end
 
-    path "/api/v1/admin/sessions" do
+    path "/api/v1/admin_collaborator/sessions" do
       post "Creates a session for the given user" do
         tags "Admins"
         security [ Bearer: [] ]
@@ -95,7 +95,7 @@ describe "Session", type: :request do
           required: [ "username", "password" ]
         }
 
-        response "404", "Error" do
+        response "400", "Error" do
           let(:session_params) { { session: { username: user.name, password: "sample" } } }
 
           run_test!
