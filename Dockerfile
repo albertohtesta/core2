@@ -2,7 +2,7 @@ FROM ruby:3.1.1-alpine
 
 RUN apk --update add build-base tzdata postgresql-dev postgresql-client
 
-ENV APP_DIR /core
+ENV APP_DIR /app
 
 WORKDIR $APP_DIR
 
@@ -15,7 +15,7 @@ ENV RAILS_ENV=$RAILS_ENV
 
 RUN gem install bundler
 
-RUN bundle install
+RUN bundle install --path=vendor/bundle
 
 COPY . ./
 
