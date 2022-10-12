@@ -11,8 +11,8 @@ Rails.application.configure do
   config.hosts << "qa-core.nordhen.com"
   config.hosts << "staging-core-api.nordhen.com"
   config.hosts << "staging-core.nordhen.com"
-  config.hosts << "core-api.nordhen.com"
-  config.hosts << "core.nordhen.com"
+  config.hosts << "api.nordhen.com"
+  config.hosts << "nordhen.com"
 
   # Exclude requests for the /build-info path from host checking
   Rails.application.config.host_authorization = {
