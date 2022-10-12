@@ -18,7 +18,7 @@ class ApplicationSubscriber
   protected
 
   def permitted_attributes
-    @permitted_attributes ||= self.class::ATTRS.keys.each_with_object({}) do |key, permitted_payload|
+    self.class::ATTRS.keys.each_with_object({}) do |key, permitted_payload|
       permitted_payload[key] = value(key)
       permitted_payload
     end
@@ -29,6 +29,6 @@ class ApplicationSubscriber
   end
 
   def parsed_payload
-    @parsed_payload ||= JSON.parse(@payload, symbolize_names: true)
+    JSON.parse(@payload, symbolize_names: true)
   end
 end
