@@ -6,16 +6,16 @@ RSpec.describe ValidateUserBeforeRegisterService do
   let(:payload) do
     {
       email:,
-      groups_names: roles
+      role:
     }
   end
-  let(:roles) { ["collaborator"] }
+  let(:role) { "collaborator" }
   let(:email) { "sample@gmail.com" }
-  subject(:service) { described_class.for(payload) }
+  subject(:service) { described_class.call(payload) }
 
   context "with valid params" do
     it "should register as collaborator user" do
-      expect(service).to eq(true)
+      expect(service).to be_a_success
       expect(User.count).to eq(1)
     end
   end
@@ -23,7 +23,7 @@ RSpec.describe ValidateUserBeforeRegisterService do
   context "with an existing user client and inviting him as a client" do
     let(:user) { create(:user, roles: ["client"]) }
     let(:email) { user.email }
-    let(:roles) { ["client"] }
+    let(:role) { "client" }
 
     it "should publish a failed message" do
       service
@@ -35,7 +35,7 @@ RSpec.describe ValidateUserBeforeRegisterService do
   context "with an existing user client, he will be a collaborator as well" do
     let(:user) { create(:user, roles: ["client"]) }
     let(:email) { user.email }
-    let(:roles) { ["collaborator"] }
+    let(:role) { "collaborator" }
 
     it "should save two roles" do
       service

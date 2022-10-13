@@ -3,7 +3,7 @@
 module Users
   class CollaboratorCreatedSubscriber < ApplicationSubscriber
     from_queue "core.collaborator_user.new", ack: true
-    ROLE = { groups_names: ["collaborator"] }
+    ROLE = { role: "collaborator" }
 
     ATTRS = {
       email: :email
@@ -14,7 +14,7 @@ module Users
       puts("INVITATION from collaborators: #{collaborator_params}")
 
       ::Rollbar.info("Users::CollaboratorCreatedSubscriber#process", params: collaborator_params)
-      ::ValidateUserBeforeRegisterService.for(collaborator_params)
+      ::ValidateUserBeforeRegisterService.call(collaborator_params)
     end
   end
 end

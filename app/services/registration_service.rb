@@ -1,56 +1,40 @@
 # frozen_string_literal: true
 
-# create cognito user
-class RegistrationService < CognitoService
-  attr_reader :error
+class RegistrationService
+  include Interactor
 
-  def create_user
-    ActiveRecord::Base.transaction do
-      User.create!(email: @user_object[:email], roles: @user_object[:groups_names])
-    rescue StandardError => e
-      Rollbar.error("RegistrationService#create_user Error", error: e, params: @user_object)
-      @error = e
-      return false
-    end
+  attr_accessor :user
 
-    begin
-      resp = CognitoService::CLIENT.admin_create_user(auth_object)
-      Rollbar.info("RegistrationService", cognito_response: resp)
-      add_user_to_table(resp)
-      publish_created_user
-      AddUserToAwsCognitoPoolGroupJob.perform_later(@user_object)
-    rescue StandardError => e
-      @error = e
-      return false
-    end
-    true
+  def call
+    register_user
+    add_user_to_cognito_role
+    publish_by_user_role
   end
 
   private
 
-  def publish_created_user
-    Rollbar.info("RegistrationService Publisher", user:)
-    Users::CollaboratorCreatedPublisher.publish(user.attributes) if user.roles.include?("collaborator")
-    Users::ClientCreatedPublisher.publish(user.attributes) if user.roles.include?("client")
+  def create_cognito_user
+    service = ::Cognito::CreateUserService.call(email: context.email)
+    context.fail!(error: service.error) if service.failure?
+    service
   end
 
-  def user
-    ActiveRecord::Base.transaction do
-      @user ||= User.find_by!(email: @user_object[:email])
+  def register_user
+    uuid = create_cognito_user.user_created.user.username
+
+    service = RegisterUserService.call(email: context.email, role: context.role, uuid:)
+    context.fail!(error: service.error) if service.failure?
+    @user = service.user
+  end
+
+  def add_user_to_cognito_role
+    service = ::Cognito::AddUserToRoleService.call(email: context.email, role: context.role)
+    context.fail!(error: service.error) if service.failure?
+  end
+
+  def publish_by_user_role
+    if user && !(context.role == "admin")
+      "Users::#{context.role.capitalize}CreatedPublisher".constantize.publish(user.attributes)
     end
-  end
-
-  def add_user_to_table(response)
-    user.lock!
-    user.update!(uuid: response.user.username)
-  end
-
-  def auth_object
-    {
-      user_pool_id: CognitoService::POOL_ID,
-      username: @user_object[:email],
-      desired_delivery_mediums: ["EMAIL"],
-      user_attributes: [{ name: "email", value: @user_object[:email] }, { name: "email_verified", value: "true" }]
-    }
   end
 end
