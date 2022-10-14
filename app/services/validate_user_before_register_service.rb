@@ -8,7 +8,7 @@ class ValidateUserBeforeRegisterService
   delegate :email, :role, to: :context
 
   def call
-    Rollbar.info("Params", email:, role:, context: context)
+    Rollbar.info("Params", email:, role:, context:)
 
     if registered_user && role_taken?
       Rollbar.info(
