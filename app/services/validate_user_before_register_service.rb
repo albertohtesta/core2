@@ -24,7 +24,11 @@ class ValidateUserBeforeRegisterService
       publish_updated_message
     else
       service = RegistrationService.call(email:, role:)
-      context.fail!(error: service.error) if service.failure?
+
+      if service.failure?
+        Rollbar.error("RegistrationService", error: service.error)
+        context.fail!(error: service.error) if service.failure?
+      end
     end
   end
 

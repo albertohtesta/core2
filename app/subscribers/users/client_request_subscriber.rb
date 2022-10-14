@@ -11,6 +11,7 @@ module Users
 
     def process
       client_params = permitted_attributes.merge(ROLE)
+      puts client_params
 
       ::Rollbar.info("Users::ClientRequestSubscriber#process", params: client_params)
       ::ValidateUserBeforeRegisterService.call(client_params)

@@ -15,7 +15,11 @@ class RegistrationService
 
   def create_cognito_user
     service = ::Cognito::CreateUserService.call(email: context.email)
-    context.fail!(error: service.error) if service.failure?
+
+    if service.failure?
+      context.fail!(error: service.error) if service.failure?
+      Rollbar.error("Cognito::CreateUserService", error: service.error)
+    end
     service
   end
 
@@ -23,13 +27,19 @@ class RegistrationService
     uuid = create_cognito_user.user_created.user.username
 
     service = RegisterUserService.call(email: context.email, role: context.role, uuid:)
-    context.fail!(error: service.error) if service.failure?
+    if service.failure?
+      Rollbar.error("RegisterUserService", error: service.error)
+      context.fail!(error: service.error) if service.failure?
+    end
     @user = service.user
   end
 
   def add_user_to_cognito_role
     service = ::Cognito::AddUserToRoleService.call(email: context.email, role: context.role)
-    context.fail!(error: service.error) if service.failure?
+    if service.failure?
+      Rollbar.error("Cognito::AddUserToRoleService", error: service.error)
+      context.fail!(error: service.error) if service.failure?
+    end
   end
 
   def publish_by_user_role
