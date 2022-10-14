@@ -17,8 +17,8 @@ class RegistrationService
     service = ::Cognito::CreateUserService.call(email: context.email)
 
     if service.failure?
-      context.fail!(error: service.error) if service.failure?
       Rollbar.error("Cognito::CreateUserService", error: service.error)
+      context.fail!(error: service.error) if service.failure?
     end
     service
   end
