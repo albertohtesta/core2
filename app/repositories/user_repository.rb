@@ -10,9 +10,10 @@ class UserRepository < ApplicationRepository
     scope.find_by(email:)
   end
 
-  def self.filter_by_admin_and_client_users
-    scope.where("roles LIKE ?", "%admin%")
-         .or(scope.where("roles LIKE ?", "%client%"))
+  def self.filter_by_role_email_and_not_collaborators(role:, email:)
+    scope.where("email LIKE ?", "%#{email}%")
+         .where("roles LIKE ?", "%#{role}%")
+         .where.not("roles LIKE ?", "%collaborator%")
          .order(email: :asc)
   end
 end
