@@ -25,12 +25,12 @@ describe "Admins::Registrations", type: :request do
           email: { type: :string },
           groups_names: { type: :array }
         },
-        required: [ "email", "groups_names" ]
+        required: [ "email", "role" ]
       }
 
       context "register a user with multiples roles" do
         response "200", "Invitation sent successfully" do
-          let(:registration_params) { { registration: { email: "panchito@gmail.com", groups_names: ["admin", "collaborator"] } } }
+          let(:registration_params) { { registration: { email: "panchito@gmail.com", role: "admin" } } }
 
           run_test!
         end
@@ -38,7 +38,7 @@ describe "Admins::Registrations", type: :request do
 
       context "register a user with invalid roles" do
         response "400", "Validation failed: Roles is not included in the list" do
-          let(:registration_params) { { registration: { email: "johndoe@gmail.com", groups_names: ["finances", "hr"] } } }
+          let(:registration_params) { { registration: { email: "johndoe@gmail.com", role: "finances" } } }
 
           run_test!
         end

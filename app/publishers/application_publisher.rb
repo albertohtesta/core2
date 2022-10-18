@@ -12,6 +12,7 @@ class ApplicationPublisher
 
     def publish(message, **args)
       permitted_message = validate(message)
+      Rollbar.info("ApplicationPublisher publish", message: permitted_message)
       new(**args).publish(permitted_message)
     end
 

@@ -1,49 +1,51 @@
 # frozen_string_literal: true
 
 # respond to
-class ValidateUserBeforeRegisterService < ApplicationService
-  attr_reader :payload
+class ValidateUserBeforeRegisterService
+  include Interactor
+  include Integrations::Cognito
 
-  def initialize(payload)
-    @payload = payload
-  end
+  delegate :email, :role, to: :context
 
-  def process
+  def call
+    Rollbar.info("Params", email:, role:, context:)
+
     if registered_user && role_taken?
       Rollbar.info(
-        "ValidateUserBeforeRegisterService#process",
-        message: "The user #{payload[:email]} already have this #{role} role",
+        "ValidateUserBeforeRegisterService#call",
+        message: "The user #{email} already have this #{role} role",
         user: registered_user
       )
-      return publish_failed_message("The user #{payload[:email]} already have this #{role} role")
+
+      publish_failed_message("The user #{email} already have this #{role} role")
+      context.fail!(error: "The user #{email} already have this #{role} role")
     end
 
     if registered_user
       update_role
       publish_updated_message
     else
-      service = RegistrationService.new(payload)
-      service.create_user
-      true
+      service = RegistrationService.call(email:, role:)
+
+      if service.failure?
+        Rollbar.error("RegistrationService", error: service.error)
+        context.fail!(error: service.error) if service.failure?
+      end
     end
   end
 
   private
 
   def publish_failed_message(message)
-    "Users::#{role.capitalize}FailedPublisher".constantize.publish({ message: })
+    "Users::#{role.capitalize}FailedPublisher".constantize.publish({ message: }) unless role == "admin"
   end
 
   def publish_updated_message
-    "Users::#{role.capitalize}CreatedPublisher".constantize.publish(registered_user.attributes)
+    "Users::#{role.capitalize}CreatedPublisher".constantize.publish(registered_user.attributes) unless role == "admin"
   end
 
   def registered_user
-    UserRepository.find_by_email(payload[:email])
-  end
-
-  def role
-    payload[:groups_names].join
+    UserRepository.find_by_email(email)
   end
 
   def role_taken?
@@ -55,21 +57,11 @@ class ValidateUserBeforeRegisterService < ApplicationService
       user = registered_user
       user.roles << role
       user.save!
-      CognitoService::CLIENT.admin_add_user_to_group(user_object)
+      add_user_to_role(email: user.email, role:)
       Rollbar.info("ValidateUserBeforeRegisterService updated role", user: registered_user)
     rescue ActiveRecord::RecordInvalid => e
-      CognitoService::CLIENT.admin_remove_user_from_group(user_object)
+      remove_user_from_role(email: user.email, role:)
       Rollbar.error("ValidateUserBeforeRegisterService::Error", error: e, user: registered_user, role:)
-      @error = e
-      return false
     end
-  end
-
-  def user_object
-    @user_object ||= {
-      user_pool_id: CognitoService::POOL_ID,
-      username: registered_user.email,
-      group_name: role
-    }
   end
 end

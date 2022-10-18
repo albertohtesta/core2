@@ -3,7 +3,7 @@
 module Users
   class ClientRequestSubscriber < ApplicationSubscriber
     from_queue "core.client_user.new", ack: true
-    ROLE = { groups_names: ["client"] }
+    ROLE = { role: "client" }
 
     ATTRS = {
       email: :email
@@ -11,9 +11,10 @@ module Users
 
     def process
       client_params = permitted_attributes.merge(ROLE)
+      puts client_params
 
       ::Rollbar.info("Users::ClientRequestSubscriber#process", params: client_params)
-      ::ValidateUserBeforeRegisterService.for(client_params)
+      ::ValidateUserBeforeRegisterService.call(client_params)
     end
   end
 end
