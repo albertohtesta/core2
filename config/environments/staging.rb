@@ -12,7 +12,7 @@ Rails.application.configure do
 
   # Exclude requests for the /build-info path from host checking
   Rails.application.config.host_authorization = {
-    exclude: ->(request) { request.path =~ /build-info/ }
+    exclude: ->(request) { request.path.include?("build-info") }
   }
 
   # Eager load code on boot. This eager loads most of Rails and
