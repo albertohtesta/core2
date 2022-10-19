@@ -4,13 +4,14 @@ require "rails_helper"
 
 RSpec.describe Cognito::CreateUserService do
   let(:email) { "sample@gmail.com" }
-  subject(:service) { described_class.call(email:) }
+  let(:role) { "collaborator" }
+  subject(:service) { described_class.call(email:, role:) }
 
-  context "with valid email" do
+  context "with valid data" do
     it { expect(service).to be_a_success }
   end
 
-  context "with invalid email" do
+  context "with invalid data" do
     let(:email) { nil }
 
     it { expect(service).to be_a_failure }
