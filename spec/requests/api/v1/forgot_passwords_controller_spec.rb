@@ -28,7 +28,7 @@ describe "ForgotPassword", type: :request do
       }
 
       response "200", "Password recovery email sent" do
-        let(:recover_password_params) { { credentials: { username: user.name } } }
+        let(:recover_password_params) { { credentials: { username: user.email } } }
 
         run_test!
       end
