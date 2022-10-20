@@ -14,7 +14,7 @@ class RegistrationService
   private
 
   def create_cognito_user
-    service = ::Cognito::CreateUserService.call(email: context.email)
+    service = ::Cognito::CreateUserService.call(email: context.email, role: context.role)
 
     if service.failure?
       Rollbar.error("Cognito::CreateUserService", error: service.error)

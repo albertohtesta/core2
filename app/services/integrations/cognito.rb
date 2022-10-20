@@ -14,12 +14,13 @@ module Integrations
       )
     end
 
-    def create_user(email:)
+    def create_user(email:, role:)
       client.admin_create_user(
         user_pool_id: POOL_ID,
         username: email,
         desired_delivery_mediums: ["EMAIL"],
-        user_attributes: [{ name: "email", value: email }, { name: "email_verified", value: "true" }]
+        user_attributes: [{ name: "email", value: email }, { name: "email_verified", value: "true" }],
+        client_metadata: { "role": role }
       )
     end
 

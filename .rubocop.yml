@@ -12,6 +12,7 @@ AllCops:
     - services/**/*
     - vendor/**/*
     - db/**/*
+    - bin/**/*
 
 Style/StringLiterals:
   Enabled: true

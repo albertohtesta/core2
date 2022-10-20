@@ -15,8 +15,18 @@ class PasswordService < CognitoService
   end
 
   def recover_password
+    user = UserRepository.find_by_email(@user_object[:username])
+    unless user
+      @error = "The given user was not found"
+      return false
+    end
+
     begin
-      CLIENT.forgot_password(recover_password_object)
+      CLIENT.forgot_password(
+        client_id: CLIENT_ID,
+        username: @user_object[:username],
+        client_metadata: { "role" => user.roles.first }
+      )
     rescue StandardError => e
       @error = e
       return false
@@ -41,13 +51,6 @@ class PasswordService < CognitoService
       previous_password: @user_object[:password],
       proposed_password: @user_object[:new_password],
       access_token: @user_object[:access_token]
-    }
-  end
-
-  def recover_password_object
-    @recover_password_object ||= {
-      client_id: CLIENT_ID,
-      username: @user_object[:username]
     }
   end
 
