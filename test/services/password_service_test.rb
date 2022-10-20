@@ -32,7 +32,8 @@ class PasswordServiceTest < ActiveSupport::TestCase
   end
 
   test "should assert forgot password" do
-    @recover_password_service = PasswordService.new({ username: "test-registration@test.com" })
+    user = create(:user, roles: ['admin'])
+    @recover_password_service = PasswordService.new({ username: user.email })
 
     assert(@recover_password_service.recover_password)
   end
