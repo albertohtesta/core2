@@ -9,6 +9,7 @@ module Cognito
 
     def call
       context.user_created = create_user(email: context.email, role: context.role)
+      Rollbar.info("Cognito Response When Creating User", response: context.user_created)
     rescue Aws::CognitoIdentityProvider::Errors::ServiceError => e
       Rollbar.error("Cognito::CreateUser#call", email: context.email, role: context.role, error: e)
       context.fail!(error: e.message)
