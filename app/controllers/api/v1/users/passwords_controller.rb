@@ -8,12 +8,12 @@ module Api
         skip_before_action :verify_token, :current_user, only: :create
 
         def create
-          @challenge_service = ChallengeService.new(session_params)
+          service = SetPasswordService.call(session_params)
 
-          if @challenge_service.respond_to_change_password_challenge
+          if service.success?
             render json: { message: "Password updated" }, status: :ok
           else
-            render json: { errors: @challenge_service.error }, status: :bad_request
+            render json: { errors: service.error }, status: :bad_request
           end
         end
 

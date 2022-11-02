@@ -83,5 +83,22 @@ module Integrations
         username: email
       )
     end
+
+    def login_as_user(username:, password:)
+      client.initiate_auth(
+        client_id: CLIENT_ID,
+        auth_flow: "USER_PASSWORD_AUTH",
+        auth_parameters: { USERNAME: username, PASSWORD: password }
+      )
+    end
+
+    def set_new_password_for_user(challenge_name:, session:, username:, new_password:)
+      client.respond_to_auth_challenge(
+        client_id: CLIENT_ID,
+        challenge_name:,
+        session:,
+        challenge_responses: { USERNAME: username, NEW_PASSWORD: new_password }
+      )
+    end
   end
 end
