@@ -54,7 +54,7 @@ class SessionService < CognitoService
     when "client"
       raise AuthorizationError.new("The user is not allowed to perfom this action") unless user.client?
     when "admin_collaborator"
-      raise AuthorizationError.new("The user is not allowed to perfom this action") unless user.admin? || user.collaborator?
+      raise AuthorizationError.new("The user is not allowed to perfom this action") if user.client?
     else
       raise AuthorizationError.new("The user is not allowed to perfom this action")
     end

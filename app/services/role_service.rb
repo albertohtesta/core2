@@ -1,47 +1,47 @@
 # frozen_string_literal: true
 
 # authenticate cognito user
-class RoleService < CognitoService
-  attr_reader :error
+class RoleService
+  include Interactor
+  include Integrations::Cognito
 
-  def update_role
-    begin
-      remove_user_from_group
-      add_user_to_group
-      update_db_role
-    rescue StandardError => e
-      @error = e
-      return false
-    end
-    true
+  before :valid_role?
+
+  def call
+    remove_and_update_with_new_role
+    remove_role_from_cognito
+    add_role_to_cognito
   end
 
   private
 
   def user
-    @user ||= User.find_by(email: @user_object[:email])
+    UserRepository.find_by_email(context.email)
   end
 
-  def remove_user_from_group
-    user.roles.each do |role|
-      CLIENT.admin_remove_user_from_group(update_user_object.merge(group_name: role))
+  def valid_role?
+    context.fail!(error: "This user dont has the given role") unless user.roles.include?(context.old_role)
+  end
+
+  def remove_and_update_with_new_role
+    ActiveRecord::Base.transaction do
+      update_user = user
+      update_user.roles.reject { |role| role == context.old_role }
+      update_user.roles << context.new_role
+      update_user.save!
+    rescue ActiveRecord::RecordInvalid => e
+      Rollbar.error("RoleService#update_db_role", email: context.email, role: context.old_role, error: e)
+      context.fail!(error: e)
     end
   end
 
-  def add_user_to_group
-    @user_object[:groups_names].each do |role|
-      CLIENT.admin_add_user_to_group(update_user_object.merge(group_name: role))
-    end
+  def remove_role_from_cognito
+    service = Cognito::RemoveUserRoleService.call(email: context.email, role: context.old_role)
+    context.fail!(error: service.error) if service.failed
   end
 
-  def update_db_role
-    user.update(roles: @user_object[:groups_names])
-  end
-
-  def update_user_object
-    @update_user_object ||= {
-      user_pool_id: POOL_ID,
-      username: @user_object[:email]
-    }
+  def add_role_to_cognito
+    service = Cognito::AddUserToRoleService.call(email: context.email, role: context.new_role)
+    context.fail!(error: service.error) if service.failed
   end
 end

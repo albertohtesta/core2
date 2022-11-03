@@ -6,19 +6,19 @@ module Api
       # Update roles endpoint
       class RolesController < ApiAdminController
         def update
-          role_service = RoleService.new(user_params)
+          service = RoleService.call(role_params)
 
-          if role_service.update_role
+          if service.success?
             render json: { message: "Role updated" }, status: :ok
           else
-            render json: { errors: role_service.error }, status: :bad_request
+            render json: { errors: service.error }, status: :bad_request
           end
         end
 
         private
 
-        def user_params
-          params.require(:role).permit(:email, groups_names: [])
+        def role_params
+          params.require(:role).permit(:email, :old_role, :new_role)
         end
       end
     end
