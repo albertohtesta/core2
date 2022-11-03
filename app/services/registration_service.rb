@@ -43,7 +43,7 @@ class RegistrationService
   end
 
   def publish_by_user_role
-    if user && !(context.role == "admin")
+    if user && (context.role == "client" || context.role == "collaborator")
       Rollbar.info("BeforePublish", user: user.attributes, role: context.role.capitalize)
       "Users::#{context.role.capitalize}CreatedPublisher".constantize.publish(user.attributes)
     end

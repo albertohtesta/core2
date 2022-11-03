@@ -2,7 +2,7 @@
 
 # User model
 class User < ApplicationRecord
-  ROLES = %w[admin collaborator client]
+  ROLES = %w[admin collaborator client finance operation]
 
   serialize :roles, Array
 
