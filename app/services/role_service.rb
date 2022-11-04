@@ -26,7 +26,7 @@ class RoleService
   def remove_and_update_with_new_role
     ActiveRecord::Base.transaction do
       update_user = user
-      update_user.roles.reject { |role| role == context.old_role }
+      update_user.roles.reject! { |role| role == context.old_role }
       update_user.roles << context.new_role
       update_user.save!
     rescue ActiveRecord::RecordInvalid => e
