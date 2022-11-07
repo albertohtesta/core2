@@ -6,9 +6,10 @@ describe "Admins::Roles", type: :request do
   include WebmockHelper
 
   path "/api/v1/admins/roles" do
-    let(:user) { create(:user) }
+    let(:user) { create(:user, roles: ["admin", "collaborator"]) }
     let(:Authorization) { @token }
     let(:id) { user.id }
+    let(:role_params) { }
 
     before do
       login_as(user)
@@ -19,23 +20,24 @@ describe "Admins::Roles", type: :request do
       security [ Bearer: [] ]
       consumes "application/json"
       produces "application/json"
-      parameter name: :user_params, in: :body, schema: {
+      parameter name: :role_params, in: :body, schema: {
         type: :object,
         role: {
           email: { type: :string },
-          groups_names: { type: :array }
+          new_role: { type: :string },
+          old_role: { type: :string }
         },
-        required: [ "email", "groups_names" ]
+        required: [ "email", "new_role", "old_role" ]
       }
 
       response "200", "user updated" do
-        let(:user_params) { { role: { email: user.email, groups_names: ["collaborator"] } } }
+        let(:role_params) { { role: { email: user.email, new_role: "client", old_role: "collaborator" } } }
 
         run_test!
       end
 
       response "400", "bad request" do
-        let(:user_params) { { role: { email: "foo" } } }
+        let(:role_params) { { role: { email: user.email, new_role: "client", old_role: "jaja" } } }
 
         run_test!
       end
