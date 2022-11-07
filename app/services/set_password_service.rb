@@ -20,7 +20,7 @@ class SetPasswordService
   def login_temporally
     context.login = login_as_user(username:, password:)
   rescue Aws::CognitoIdentityProvider::Errors::ServiceError => e
-    Rollbar.error("SetPasswordService#login_temporally", username: username, error: e)
+    Rollbar.error("SetPasswordService#login_temporally", username:, error: e)
     context.fail!(error: e.message)
   end
 
@@ -32,7 +32,7 @@ class SetPasswordService
       new_password:
     )
   rescue Aws::CognitoIdentityProvider::Errors::ServiceError => e
-    Rollbar.error("SetPasswordService#set_new_password", username: username, error: e)
+    Rollbar.error("SetPasswordService#set_new_password", username:, error: e)
     context.fail!(error: e.message)
   end
 
