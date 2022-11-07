@@ -5,7 +5,10 @@ class SetPasswordService
   include ::Integrations::Cognito
   include Interactor
 
+  delegate :username, :password, :new_password, to: :context
+
   before :validate_user
+  before :login_temporally
 
   def call
     set_new_password
@@ -34,7 +37,7 @@ class SetPasswordService
   end
 
   def user
-    @user ||= UserRepository.find_by_email(context.username)
+    @user ||= UserRepository.find_by_email(username)
   end
 
   def validate_user
