@@ -37,11 +37,11 @@ class ValidateUserBeforeRegisterService
   private
 
   def publish_failed_message(message)
-    "Users::#{role.capitalize}FailedPublisher".constantize.publish({ message: }) if role == "client" || role == "collaborator"
+    "Users::#{role.capitalize}FailedPublisher".constantize.publish({ message: }) if role == "client"
   end
 
   def publish_updated_message
-    "Users::#{role.capitalize}CreatedPublisher".constantize.publish(registered_user.attributes) if role == "client" || role == "collaborator"
+    "Users::#{role.capitalize}CreatedPublisher".constantize.publish(registered_user.attributes) if role == "client"
   end
 
   def registered_user

@@ -9,7 +9,7 @@ class SetPasswordService
 
   def call
     set_new_password
-    Users::CollaboratorEntrolledPublisher.publish(user.attributes)
+    Users::CollaboratorCreatedPublisher.publish(user.attributes)
   end
 
   private
