@@ -32,7 +32,7 @@ describe "Password", type: :request do
       response "200", "Password updated" do
         let(:sessions_params) do
           {
-            credentials: { username: user.name, password: "sample pass", new_password: "my password" }
+            credentials: { username: user.email, password: "sample pass", new_password: "my password" }
           }
         end
 
@@ -60,7 +60,7 @@ describe "Password", type: :request do
       response "200", "Password set successfully. A confirmation mail was sent." do
         let(:sessions_params) do
           {
-            credentials: { username: user.name, password: "sample pass", new_password: "my password" }
+            credentials: { username: user.email, password: "sample pass", new_password: "my password" }
           }
         end
 
