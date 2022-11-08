@@ -7,7 +7,7 @@ module Api
       class UsersController < ApiAdminController
         def index
           @users = ::Users::UserPresenter.paginate_collection(
-            UserRepository.filter_by_role_email_and_not_collaborators(
+            UserRepository.filter_by_role_email(
               role: params[:role],
               email: params[:email]
             )

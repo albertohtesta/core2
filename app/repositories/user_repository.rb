@@ -16,4 +16,14 @@ class UserRepository < ApplicationRepository
          .where.not("roles LIKE ?", "%collaborator%")
          .order(email: :asc)
   end
+
+  def self.filter_by_role_email(role:, email:)
+    if email.present?
+      scope.where("roles LIKE ? or roles LIKE ? or roles LIKE ? or roles LIKE ?",
+        "%admin%", "%finance%", "%operation%", "%client").
+      where("email LIKE ?", "%#{email}%")
+    else
+      scope.where("roles LIKE ?", "%#{role}%")
+    end
+  end
 end
